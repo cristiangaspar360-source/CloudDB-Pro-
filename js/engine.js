@@ -23,8 +23,8 @@ class DatabaseEngine {
 
   async init() {
     return new Promise((resolve, reject) => {
-      const req = indexedDB.open(this.dbName, this.version);
-      req.onerror = () => reject(req.error);
+      const req = indexedDB.open(this.dbName);
+            req.onerror = () => reject(req.error);
       req.onsuccess = () => { this.db = req.result; this._loadTables().then(resolve).catch(reject); };
       req.onupgradeneeded = e => this._setupStores(e.target.result);
     });
