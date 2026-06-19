@@ -1,0 +1,1044 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>ReservaOS — Controlador de Versiones</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0f0f13;--bg2:#1a1a24;--bg3:#24243a;--bg4:#1e1e2e;
+  --border:#2e2e45;--border2:#3d3d58;
+  --accent:#6366f1;--accent2:#818cf8;--accent3:#a5b4fc;
+  --teal:#0d9488;--teal2:#14b8a6;--teal3:#5eead4;
+  --amber:#d97706;--amber2:#f59e0b;--amber3:#fcd34d;
+  --green:#059669;--green2:#10b981;--green3:#6ee7b7;
+  --red:#dc2626;--red2:#ef4444;--red3:#fca5a5;
+  --text:#e8e8f0;--text2:#9b9bb5;--text3:#6b6b85;
+  --radius:8px;--radius2:12px;--radius3:16px;
+  --shadow:0 4px 24px rgba(0,0,0,.5);
+  --shadow2:0 8px 40px rgba(0,0,0,.6);
+}
+html,body{min-height:100%;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg);color:var(--text);font-size:13px}
+a{color:var(--accent2);text-decoration:none}
+
+/* ── SCROLLBAR ── */
+::-webkit-scrollbar{width:6px;height:6px}
+::-webkit-scrollbar-track{background:var(--bg2)}
+::-webkit-scrollbar-thumb{background:var(--border2);border-radius:99px}
+
+/* ── LAYOUT ── */
+#shell{display:flex;flex-direction:column;min-height:100vh}
+#header{position:sticky;top:0;z-index:100;background:var(--bg2);border-bottom:1px solid var(--border);padding:0 28px;height:52px;display:flex;align-items:center;gap:16px}
+#header .logo{font-size:15px;font-weight:700;color:var(--accent3);letter-spacing:-.3px;display:flex;align-items:center;gap:8px}
+#header .logo .dot{width:8px;height:8px;border-radius:50%;background:var(--teal2);display:inline-block;animation:pulse 2s ease infinite}
+#header .subtitle{font-size:11px;color:var(--text3);border-left:1px solid var(--border);padding-left:16px;margin-left:4px}
+#header .badge{margin-left:auto;font-size:10px;font-weight:600;background:var(--accent);color:#fff;padding:3px 10px;border-radius:99px;letter-spacing:.5px}
+#tabs{display:flex;gap:2px;padding:16px 28px 0;background:var(--bg2);border-bottom:1px solid var(--border)}
+.tab{padding:8px 18px;font-size:12px;font-weight:600;color:var(--text3);border-radius:var(--radius) var(--radius) 0 0;cursor:pointer;border:1px solid transparent;border-bottom:none;transition:.15s}
+.tab:hover{color:var(--text2);background:var(--bg3)}
+.tab.active{color:var(--accent3);background:var(--bg);border-color:var(--border);border-bottom:1px solid var(--bg)}
+#content{flex:1;padding:28px}
+
+/* ── SECTIONS ── */
+.section{display:none}.section.active{display:block}
+.section-title{font-size:18px;font-weight:700;color:var(--text);margin-bottom:6px}
+.section-sub{font-size:12px;color:var(--text3);margin-bottom:24px}
+
+/* ── TIMELINE ── */
+.timeline{position:relative;padding-left:32px}
+.timeline::before{content:'';position:absolute;left:11px;top:8px;bottom:8px;width:2px;background:linear-gradient(to bottom,var(--accent),var(--teal2),var(--amber2));border-radius:99px}
+.tl-item{position:relative;margin-bottom:28px}
+.tl-dot{position:absolute;left:-32px;top:14px;width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;border:2px solid var(--bg);z-index:1}
+.tl-dot.saas{background:var(--accent)}
+.tl-dot.html-v2{background:var(--teal)}
+.tl-dot.html-v3{background:var(--teal2)}
+.tl-dot.backend{background:var(--amber)}
+.tl-dot.commercial{background:var(--green)}
+.tl-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius2);padding:18px 22px;transition:.2s}
+.tl-card:hover{border-color:var(--border2);box-shadow:var(--shadow)}
+.tl-header{display:flex;align-items:flex-start;gap:12px;margin-bottom:14px}
+.tl-icon{font-size:26px;line-height:1}
+.tl-meta{flex:1}
+.tl-name{font-size:14px;font-weight:700;color:var(--text);margin-bottom:2px}
+.tl-date{font-size:10px;color:var(--text3);margin-bottom:6px}
+.tl-tags{display:flex;flex-wrap:wrap;gap:5px}
+.tag{font-size:10px;font-weight:600;padding:2px 8px;border-radius:99px;border:1px solid}
+.tag.stack{color:var(--accent3);border-color:var(--accent);background:rgba(99,102,241,.12)}
+.tag.feature{color:var(--teal3);border-color:var(--teal);background:rgba(13,148,136,.12)}
+.tag.deploy{color:var(--amber3);border-color:var(--amber);background:rgba(217,119,6,.12)}
+.tag.new{color:var(--green3);border-color:var(--green);background:rgba(5,150,105,.12)}
+.tl-desc{font-size:12px;color:var(--text2);line-height:1.7;margin-bottom:14px}
+.tl-features{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:6px}
+.feat-item{display:flex;align-items:center;gap:7px;font-size:11px;color:var(--text2);padding:5px 8px;background:var(--bg3);border-radius:var(--radius)}
+.feat-item .fi{font-size:13px}
+.feat-item b{color:var(--text);font-weight:600}
+.tl-size{font-size:10px;color:var(--text3);margin-top:10px;padding-top:10px;border-top:1px solid var(--border)}
+.delta{display:inline-flex;align-items:center;gap:4px;font-size:10px;font-weight:600;padding:2px 8px;border-radius:99px;margin-left:8px}
+.delta.up{background:rgba(16,185,129,.15);color:var(--green2)}
+.delta.new{background:rgba(99,102,241,.15);color:var(--accent2)}
+
+/* ── FEATURE MATRIX ── */
+.matrix-wrap{overflow-x:auto;border:1px solid var(--border);border-radius:var(--radius2)}
+table.matrix{width:100%;border-collapse:collapse;min-width:800px}
+.matrix th{background:var(--bg3);padding:10px 14px;font-size:11px;font-weight:700;color:var(--text2);text-align:center;border-bottom:1px solid var(--border);white-space:nowrap}
+.matrix th.feat-col{text-align:left;min-width:220px}
+.matrix th .ver-badge{display:block;font-size:9px;font-weight:400;color:var(--text3);margin-top:2px}
+.matrix td{padding:9px 14px;border-bottom:1px solid var(--border);font-size:11px;vertical-align:middle;text-align:center}
+.matrix td.feat-name{text-align:left;color:var(--text);font-weight:500}
+.matrix td.feat-cat{text-align:left;color:var(--text3);font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;background:var(--bg4);padding:6px 14px}
+.matrix tr:last-child td{border-bottom:none}
+.matrix tr:hover td:not(.feat-cat){background:rgba(99,102,241,.04)}
+.chk{font-size:15px}
+.chk.y{color:var(--green2)}
+.chk.n{color:var(--red2);opacity:.5}
+.chk.p{color:var(--amber2)}
+
+/* ── MARKET COMPARE ── */
+.market-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;margin-bottom:28px}
+.mkt-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius2);padding:18px;position:relative;overflow:hidden;transition:.2s}
+.mkt-card:hover{border-color:var(--border2);transform:translateY(-1px);box-shadow:var(--shadow)}
+.mkt-card.highlight{border-color:var(--accent);background:linear-gradient(135deg,var(--bg2),rgba(99,102,241,.06))}
+.mkt-card.highlight::before{content:'NUESTRA SOLUCIÓN';position:absolute;top:10px;right:-24px;background:var(--accent);color:#fff;font-size:9px;font-weight:700;padding:3px 28px;transform:rotate(35deg);letter-spacing:.5px}
+.mkt-name{font-size:13px;font-weight:700;color:var(--text);margin-bottom:3px}
+.mkt-origin{font-size:10px;color:var(--text3);margin-bottom:10px}
+.mkt-price{font-size:18px;font-weight:800;color:var(--accent2);margin-bottom:4px}
+.mkt-price span{font-size:11px;font-weight:400;color:var(--text3)}
+.mkt-desc{font-size:11px;color:var(--text2);line-height:1.6;margin-bottom:12px}
+.mkt-pros,.mkt-cons{margin-bottom:8px}
+.mkt-pros .label{font-size:10px;font-weight:700;color:var(--green2);text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px}
+.mkt-cons .label{font-size:10px;font-weight:700;color:var(--red2);text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px}
+.mkt-list{list-style:none;display:flex;flex-direction:column;gap:3px}
+.mkt-list li{font-size:11px;color:var(--text2);display:flex;align-items:flex-start;gap:5px}
+.mkt-list li::before{flex-shrink:0;margin-top:1px;font-size:12px}
+.mkt-pros .mkt-list li::before{content:'✓';color:var(--green2)}
+.mkt-cons .mkt-list li::before{content:'✗';color:var(--red2);opacity:.7}
+.mkt-score{display:flex;gap:8px;margin-top:12px;padding-top:12px;border-top:1px solid var(--border)}
+.score-pill{flex:1;text-align:center;padding:5px 4px;background:var(--bg3);border-radius:var(--radius);font-size:9px;color:var(--text3)}
+.score-pill .val{display:block;font-size:14px;font-weight:800;color:var(--text);line-height:1.2}
+.score-pill .val.hi{color:var(--green2)}
+.score-pill .val.mid{color:var(--amber2)}
+.score-pill .val.lo{color:var(--red2)}
+
+/* ── RADAR / BIG COMPARE TABLE ── */
+.big-compare{overflow-x:auto;border:1px solid var(--border);border-radius:var(--radius2);margin-top:24px}
+table.bc{width:100%;border-collapse:collapse;min-width:900px}
+.bc th{background:var(--bg3);padding:10px 12px;font-size:11px;font-weight:700;color:var(--text2);border-bottom:1px solid var(--border);white-space:nowrap;text-align:center}
+.bc th:first-child{text-align:left;min-width:200px}
+.bc th.ours{color:var(--accent3);background:rgba(99,102,241,.08)}
+.bc td{padding:8px 12px;border-bottom:1px solid var(--border);font-size:11px;text-align:center;vertical-align:middle}
+.bc td:first-child{text-align:left;color:var(--text);font-weight:500}
+.bc td.ours{background:rgba(99,102,241,.04)}
+.bc td.cat{background:var(--bg4);color:var(--text3);font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px}
+.bc tr:last-child td{border-bottom:none}
+.bc tr:hover td:not(.cat){background:rgba(255,255,255,.02)}
+.win{color:var(--green2);font-weight:700}
+.neu{color:var(--text2)}
+.los{color:var(--red2);opacity:.7}
+.badge-pill{display:inline-block;font-size:9px;font-weight:700;padding:1px 7px;border-radius:99px}
+.badge-pill.g{background:rgba(16,185,129,.15);color:var(--green2)}
+.badge-pill.a{background:rgba(245,158,11,.15);color:var(--amber2)}
+.badge-pill.r{background:rgba(239,68,68,.15);color:var(--red2)}
+
+/* ── CHANGELOG ── */
+.cl-entry{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius2);margin-bottom:14px;overflow:hidden}
+.cl-head{display:flex;align-items:center;gap:12px;padding:12px 18px;cursor:pointer;user-select:none;transition:.15s}
+.cl-head:hover{background:var(--bg3)}
+.cl-ver{font-size:13px;font-weight:800;color:var(--accent2);min-width:100px}
+.cl-date{font-size:11px;color:var(--text3);flex:1}
+.cl-summary{font-size:11px;color:var(--text2);flex:2}
+.cl-arrow{color:var(--text3);font-size:12px;transition:.2s}
+.cl-entry.open .cl-arrow{transform:rotate(90deg)}
+.cl-body{display:none;padding:14px 18px;border-top:1px solid var(--border);background:var(--bg)}
+.cl-entry.open .cl-body{display:block}
+.cl-group{margin-bottom:12px}
+.cl-group-title{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px}
+.cl-group-title.added{color:var(--green2)}
+.cl-group-title.changed{color:var(--amber2)}
+.cl-group-title.arch{color:var(--accent2)}
+.cl-group-title.integr{color:var(--teal2)}
+.cl-items{list-style:none;display:flex;flex-direction:column;gap:4px}
+.cl-items li{font-size:11px;color:var(--text2);display:flex;gap:6px;align-items:flex-start}
+.cl-items li::before{content:'→';color:var(--text3);flex-shrink:0}
+
+/* ── STATS BAR ── */
+.stats-bar{display:flex;gap:16px;margin-bottom:28px;flex-wrap:wrap}
+.stat-box{flex:1;min-width:140px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius2);padding:14px 18px}
+.stat-val{font-size:26px;font-weight:800;color:var(--accent2);line-height:1;margin-bottom:4px}
+.stat-val.t{color:var(--teal2)}
+.stat-val.a{color:var(--amber2)}
+.stat-val.g{color:var(--green2)}
+.stat-label{font-size:10px;color:var(--text3);font-weight:600;text-transform:uppercase;letter-spacing:.5px}
+
+/* ── ANIMATIONS ── */
+@keyframes pulse{0%,100%{opacity:.5}50%{opacity:1}}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.section.active{animation:fadeIn .25s ease}
+</style>
+</head>
+<body>
+<div id="shell">
+
+<!-- HEADER -->
+<header id="header">
+  <div class="logo">
+    <span class="dot"></span>
+    ReservaOS <span style="color:var(--text3);font-weight:400">·</span> Version Tracker
+  </div>
+  <div class="subtitle">Control automático de versiones y comparativa de mercado</div>
+  <div class="badge">v1.0 — Jun 2026</div>
+</header>
+
+<!-- TABS -->
+<nav id="tabs">
+  <div class="tab active" onclick="showTab('timeline',this)">📅 Historial de Versiones</div>
+  <div class="tab" onclick="showTab('matrix',this)">📊 Matriz de Funcionalidades</div>
+  <div class="tab" onclick="showTab('market',this)">🏪 Comparativa de Mercado</div>
+  <div class="tab" onclick="showTab('changelog',this)">📝 Changelog Detallado</div>
+</nav>
+
+<!-- CONTENT -->
+<main id="content">
+
+<!-- ══════════════════════════════════ TIMELINE ══════════════════════════════════ -->
+<section id="tab-timeline" class="section active">
+  <div class="section-title">Historial de Versiones — ReservaOS</div>
+  <div class="section-sub">Evolución completa del sistema desde el prototipo SaaS hasta el paquete comercial</div>
+
+  <div class="stats-bar">
+    <div class="stat-box"><div class="stat-val">5</div><div class="stat-label">Versiones totales</div></div>
+    <div class="stat-box"><div class="stat-val t">24</div><div class="stat-label">Servicios gestionados</div></div>
+    <div class="stat-box"><div class="stat-val a">6</div><div class="stat-label">Integraciones externas</div></div>
+    <div class="stat-box"><div class="stat-val g">3</div><div class="stat-label">Modos de despliegue</div></div>
+    <div class="stat-box"><div class="stat-val" style="color:var(--accent2)">$35k</div><div class="stat-label">Tier Enterprise (MXN)</div></div>
+  </div>
+
+  <div class="timeline">
+
+    <!-- v0 MYOB SaaS -->
+    <div class="tl-item">
+      <div class="tl-dot saas">v0</div>
+      <div class="tl-card">
+        <div class="tl-header">
+          <div class="tl-icon">🧪</div>
+          <div class="tl-meta">
+            <div class="tl-name">MYOB SaaS App — Prototipo de Plataforma <span class="delta new">ORIGEN</span></div>
+            <div class="tl-date">15 Jun 2026 · myob-saas/</div>
+            <div class="tl-tags">
+              <span class="tag stack">Node.js</span>
+              <span class="tag stack">React + Vite</span>
+              <span class="tag stack">SQLite</span>
+              <span class="tag stack">Tailwind CSS</span>
+              <span class="tag deploy">Full-stack</span>
+              <span class="tag deploy">Build incluido</span>
+            </div>
+          </div>
+        </div>
+        <div class="tl-desc">
+          Prototipo SaaS tipo hoja de cálculo colaborativa (Google Sheets interno) para la capa de inteligencia de datos MYOB.
+          Arquitectura full-stack con backend REST en Express y frontend React compilado. Base sobre la que evoluciona ReservaOS.
+        </div>
+        <div class="tl-features">
+          <div class="feat-item"><span class="fi">🔐</span><b>Auth JWT</b> — login/registro seguro</div>
+          <div class="feat-item"><span class="fi">📋</span><b>Workbooks</b> — múltiples libros por usuario</div>
+          <div class="feat-item"><span class="fi">📄</span><b>Sheets</b> — hojas dentro de workbooks</div>
+          <div class="feat-item"><span class="fi">🔢</span><b>Fórmulas</b> — motor de cálculo propio</div>
+          <div class="feat-item"><span class="fi">📊</span><b>DiagramView</b> — visualización de datos</div>
+          <div class="feat-item"><span class="fi">🎨</span><b>Toolbar + Sidebar</b> — UI completa</div>
+          <div class="feat-item"><span class="fi">⚡</span><b>Vite HMR</b> — desarrollo rápido</div>
+          <div class="feat-item"><span class="fi">💾</span><b>SQLite WAL</b> — persistencia robusta</div>
+        </div>
+        <div class="tl-size">Peso: ~761 KB total · 45 archivos · Stack: Express 4 + React 18 + better-sqlite3</div>
+      </div>
+    </div>
+
+    <!-- v2 Chimulco -->
+    <div class="tl-item">
+      <div class="tl-dot html-v2">v2</div>
+      <div class="tl-card">
+        <div class="tl-header">
+          <div class="tl-icon">🏊</div>
+          <div class="tl-meta">
+            <div class="tl-name">ReservaOS Chimulco v2 — Primera versión cliente</div>
+            <div class="tl-date">16 Jun 2026 · ReservaOS_Chimulco_v2.zip</div>
+            <div class="tl-tags">
+              <span class="tag stack">HTML5 puro</span>
+              <span class="tag stack">CSS inline</span>
+              <span class="tag stack">Vanilla JS</span>
+              <span class="tag feature">localStorage</span>
+              <span class="tag deploy">Sin servidor</span>
+              <span class="tag deploy">Offline-first</span>
+            </div>
+          </div>
+        </div>
+        <div class="tl-desc">
+          Primera implementación específica para Chimulco Parque Acuático (Villa Corona, Jalisco). Archivo HTML único autocontenido
+          con datos guardados en localStorage. Sin dependencias externas — funciona con doble clic.
+        </div>
+        <div class="tl-features">
+          <div class="feat-item"><span class="fi">🏕️</span><b>Bungalows</b> — Zona A (5 unidades)</div>
+          <div class="feat-item"><span class="fi">🏡</span><b>Casas VIP</b> — Suite + Ale (2 unidades)</div>
+          <div class="feat-item"><span class="fi">🚐</span><b>Campers</b> — Chabela + Lola</div>
+          <div class="feat-item"><span class="fi">🛖</span><b>Cabinas</b> — 10 unidades</div>
+          <div class="feat-item"><span class="fi">🏊</span><b>Albercas</b> — 5 piscinas</div>
+          <div class="feat-item"><span class="fi">📅</span><b>Calendario</b> — vista de reservas</div>
+          <div class="feat-item"><span class="fi">🔐</span><b>Panel Admin</b> — Ctrl+Shift+A</div>
+          <div class="feat-item"><span class="fi">💾</span><b>Export</b> — CSV/JSON desde admin</div>
+        </div>
+        <div class="tl-size">Peso: ~98 KB · 4 archivos · Credenciales: admin / chimulco2026 · 24 servicios totales</div>
+      </div>
+    </div>
+
+    <!-- v3 Mejorado -->
+    <div class="tl-item">
+      <div class="tl-dot html-v3">v3</div>
+      <div class="tl-card">
+        <div class="tl-header">
+          <div class="tl-icon">✨</div>
+          <div class="tl-meta">
+            <div class="tl-name">ReservaOS v3 Mejorado <span class="delta up">+23 KB vs v2</span></div>
+            <div class="tl-date">17 Jun 2026 · ReservaOS_v3_Mejorado.zip</div>
+            <div class="tl-tags">
+              <span class="tag stack">HTML5 puro</span>
+              <span class="tag stack">Vanilla JS</span>
+              <span class="tag feature">localStorage</span>
+              <span class="tag feature">UI mejorada</span>
+              <span class="tag deploy">Sin servidor</span>
+              <span class="tag new">Genérico</span>
+            </div>
+          </div>
+        </div>
+        <div class="tl-desc">
+          Versión mejorada y generalizada del sistema. El título cambia de "Chimulco" a "ReservaOS" genérico, preparado para
+          reutilización en otros clientes. Incremento de 23 KB indica funcionalidades adicionales de UI, validaciones y experiencia
+          de usuario mejorada.
+        </div>
+        <div class="tl-features">
+          <div class="feat-item"><span class="fi">🎨</span><b>UI renovada</b> — diseño mejorado</div>
+          <div class="feat-item"><span class="fi">📱</span><b>Responsive</b> — mobile-first</div>
+          <div class="feat-item"><span class="fi">✅</span><b>Validaciones</b> — formularios robustos</div>
+          <div class="feat-item"><span class="fi">🔔</span><b>Notificaciones</b> — feedback visual</div>
+          <div class="feat-item"><span class="fi">📋</span><b>Todo v2</b> — backward compatible</div>
+          <div class="feat-item"><span class="fi">🌐</span><b>Multi-hosting</b> — iframe + static</div>
+          <div class="feat-item"><span class="fi">🐍</span><b>Python server</b> — red interna</div>
+          <div class="feat-item"><span class="fi">🏷️</span><b>Marca genérica</b> — white-label</div>
+        </div>
+        <div class="tl-size">Peso: ~121 KB · 4 archivos · Compatible con v2 · Listo para Paquete Comercial</div>
+      </div>
+    </div>
+
+    <!-- ReservaOS Pro MYOB -->
+    <div class="tl-item">
+      <div class="tl-dot backend">PRO</div>
+      <div class="tl-card">
+        <div class="tl-header">
+          <div class="tl-icon">🚀</div>
+          <div class="tl-meta">
+            <div class="tl-name">ReservaOS Pro MYOB — Backend Producción <span class="delta up">ENTERPRISE</span></div>
+            <div class="tl-date">17 Jun 2026 · reservaos-pro/</div>
+            <div class="tl-tags">
+              <span class="tag stack">Node.js 18+</span>
+              <span class="tag stack">Express</span>
+              <span class="tag stack">SQLite</span>
+              <span class="tag feature">MercadoPago</span>
+              <span class="tag feature">WhatsApp API</span>
+              <span class="tag feature">SMTP Email</span>
+              <span class="tag feature">AWS S3</span>
+              <span class="tag deploy">Railway</span>
+              <span class="tag deploy">Render</span>
+              <span class="tag deploy">Docker</span>
+            </div>
+          </div>
+        </div>
+        <div class="tl-desc">
+          Sistema de producción completo con API REST, autenticación JWT robusta, integraciones externas, base de datos con
+          schema completo, tests automatizados y configuración de despliegue en la nube. La versión más completa técnicamente.
+          Target: reservas.chimulco.mx
+        </div>
+        <div class="tl-features">
+          <div class="feat-item"><span class="fi">🔐</span><b>Auth JWT</b> — access + refresh tokens</div>
+          <div class="feat-item"><span class="fi">👥</span><b>Clientes</b> — gestión completa</div>
+          <div class="feat-item"><span class="fi">📅</span><b>Reservas</b> — CRUD + estados</div>
+          <div class="feat-item"><span class="fi">🛎️</span><b>Servicios</b> — catálogo dinámico</div>
+          <div class="feat-item"><span class="fi">📊</span><b>Dashboard</b> — métricas en tiempo real</div>
+          <div class="feat-item"><span class="fi">💳</span><b>MercadoPago</b> — cobros online</div>
+          <div class="feat-item"><span class="fi">📱</span><b>WhatsApp Business</b> — notificaciones</div>
+          <div class="feat-item"><span class="fi">📧</span><b>Email SMTP</b> — confirmaciones</div>
+          <div class="feat-item"><span class="fi">🖼️</span><b>Uploads</b> — S3/R2 cloud storage</div>
+          <div class="feat-item"><span class="fi">📮</span><b>QR codes</b> — para reservas</div>
+          <div class="feat-item"><span class="fi">🧪</span><b>Tests</b> — suite automatizada</div>
+          <div class="feat-item"><span class="fi">🐳</span><b>Docker</b> — containerizado</div>
+          <div class="feat-item"><span class="fi">⚡</span><b>Rate limiting</b> — protección API</div>
+          <div class="feat-item"><span class="fi">📁</span><b>File upload</b> — middleware multer</div>
+          <div class="feat-item"><span class="fi">🔢</span><b>Folios</b> — numeración automática</div>
+          <div class="feat-item"><span class="fi">🌱</span><b>Seeds SQL</b> — datos de prueba</div>
+        </div>
+        <div class="tl-size">Peso: ~415 KB · 40 archivos · 8 rutas API · Setup en 3 comandos · Node 18+</div>
+      </div>
+    </div>
+
+    <!-- Paquete Comercial -->
+    <div class="tl-item">
+      <div class="tl-dot commercial">💼</div>
+      <div class="tl-card">
+        <div class="tl-header">
+          <div class="tl-icon">📦</div>
+          <div class="tl-meta">
+            <div class="tl-name">Paquete Comercial ReservaOS v1.0 <span class="delta new">PRODUCTO</span></div>
+            <div class="tl-date">16 Jun 2026 · Paquete_Comercial_ReservaOS_v1.0.zip</div>
+            <div class="tl-tags">
+              <span class="tag feature">Propuesta comercial</span>
+              <span class="tag feature">Contratos</span>
+              <span class="tag feature">Manuales PDF</span>
+              <span class="tag feature">Plan capacitación</span>
+              <span class="tag deploy">Listo para vender</span>
+              <span class="tag new">White-label</span>
+            </div>
+          </div>
+        </div>
+        <div class="tl-desc">
+          Kit completo de comercialización. Incluye el sistema (v3 HTML), toda la documentación técnica, materiales de venta,
+          contratos editables y plan de capacitación. Tres tiers de precio definidos para distintos perfiles de cliente.
+        </div>
+        <div class="tl-features">
+          <div class="feat-item"><span class="fi">📄</span><b>Propuesta Comercial</b> — PDF + DOCX</div>
+          <div class="feat-item"><span class="fi">🔖</span><b>Ficha Técnica</b> — especificaciones</div>
+          <div class="feat-item"><span class="fi">📜</span><b>Contrato</b> — implementación editable</div>
+          <div class="feat-item"><span class="fi">📚</span><b>Manual Admin</b> — PDF + DOCX</div>
+          <div class="feat-item"><span class="fi">📖</span><b>Guía Cliente</b> — usuario final</div>
+          <div class="feat-item"><span class="fi">🎓</span><b>Plan Capacitación</b> — programa</div>
+          <div class="feat-item"><span class="fi">🚀</span><b>Guía Despliegue</b> — hosting</div>
+          <div class="feat-item"><span class="fi">🥉</span><b>Básico</b> — $9,500 + $1,500/mes</div>
+          <div class="feat-item"><span class="fi">🥈</span><b>Profesional</b> — $19,500 + $2,500/mes</div>
+          <div class="feat-item"><span class="fi">🥇</span><b>Enterprise</b> — $35,000 + $4,500/mes</div>
+        </div>
+        <div class="tl-size">Peso: ~1.46 MB · 26 archivos · 6 carpetas · Junio 2026</div>
+      </div>
+    </div>
+
+  </div><!-- /timeline -->
+</section>
+
+<!-- ══════════════════════════════════ MATRIX ══════════════════════════════════ -->
+<section id="tab-matrix" class="section">
+  <div class="section-title">Matriz de Funcionalidades por Versión</div>
+  <div class="section-sub">Comparativa detallada de capacidades entre todas las versiones de ReservaOS</div>
+  <div class="matrix-wrap">
+    <table class="matrix">
+      <thead>
+        <tr>
+          <th class="feat-col">Funcionalidad</th>
+          <th>MYOB SaaS<br><span class="ver-badge">v0 · Prototipo</span></th>
+          <th>Chimulco v2<br><span class="ver-badge">HTML standalone</span></th>
+          <th>v3 Mejorado<br><span class="ver-badge">HTML standalone</span></th>
+          <th>ReservaOS Pro<br><span class="ver-badge">Backend producción</span></th>
+          <th>Paquete Comercial<br><span class="ver-badge">Kit de venta</span></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td class="feat-cat" colspan="6">🔐 Autenticación y Seguridad</td></tr>
+        <tr><td class="feat-name">Login / Registro</td><td><span class="chk y">✓</span></td><td><span class="chk p">Parcial</span></td><td><span class="chk p">Parcial</span></td><td><span class="chk y">✓</span></td><td><span class="chk p">v3 incluida</span></td></tr>
+        <tr><td class="feat-name">JWT Access + Refresh tokens</td><td><span class="chk y">✓</span></td><td><span class="chk n">✗</span></td><td><span class="chk n">✗</span></td><td><span class="chk y">✓</span></td><td><span class="chk n">✗</span></td></tr>
+        <tr><td class="feat-name">Panel administrador oculto</td><td><span class="chk n">✗</span></td><td><span class="chk y">✓</span></td><td><span class="chk y">✓</span></td><td><span class="chk y">✓</span></td><td><span class="chk y">✓</span></td></tr>
+        <tr><td class="feat-name">Rate limiting API</td><td><span class="chk n">✗</span></td><td><span class="chk n">✗</span></td><td><span class="chk n">✗</span></td><td><span class="chk y">✓</span></td><td><span class="chk n">✗</span></td></tr>
+        <tr><td class="feat-name">Middleware de autorización</td><td><span class="chk y">✓</span></td><td><span class="chk n">✗</span></td><td><span class="chk n">✗</span></td><td><span class="chk y">✓</span></td><td><span class="chk n">✗</span></td></tr>
+
+        <tr><td class="feat-cat" colspan="6">📅 Gestión de Reservas</td></tr>
+        <tr><td class="feat-name">Crear / editar reservas</td><td><span class="chk n">✗</span></td><td><span class="chk y">✓</span></td><td><span class="chk y">✓</span></td><td><span class="chk y">✓</span></td><td><span class="chk y">✓</span></td></tr>
+        <tr><td class="feat-name">Vista de calendario</td><td><span class="chk n">✗</span></td><td><span class="chk y">✓</span></td><td><span class="chk y">✓</span></td><td><span class="chk y">✓</span></td><td><span class="chk y">✓</span></td></tr>
+        <tr><td class="feat-name">Estados de reserva (confirmada/pendiente)</td><td><span class="chk n">✗</span></td><td><span class="chk p">Básico</span></td><td><span class="chk p">Básico</span></td><td><span class="chk y">✓ Completo</span></td><td><span class="chk p">Básico</span></td></tr>
+        <tr><td class="feat-name">Gestión de clientes</td><td><span class="chk n">✗</span></td><td><span class="chk p">Básico</span></td><td><span class="chk p">Básico</span></td><td><span class="chk y">✓ CRUD completo</span></td><td><span class="chk p">Básico</span></td></tr>
+        <tr><td class="feat-name">Catálogo de servicios dinámico</td><td><span class="chk n">✗</span></td><td><span class="chk y">✓ Fijo</span></td><td><span class="chk y">✓ Fijo</span></td><td><span class="chk y">✓ Dinámico</span></td><td><span class="chk y">✓ Fijo</span></td></tr>
+        <tr><td class="feat-name">Folio / numeración automática</td><td><span class="chk n">✗</span></td><td><span class="chk n">✗</span></td><td><span class="chk n">✗</span></td><td><span class="chk y">✓</span></td><td><span class="chk n">✗</span></td></tr>
+        <tr><td class="feat-name">Multi-usuario simultáneo</td><td><span class="chk y">✓</span></td><td><span class="chk n">✗</span></td><td><span class="chk n">✗</span></td><td><span class="chk y">✓</span></td><td><span class="chk n">✗</span></td></tr>
+
+        <tr><td class="feat-cat" colspan="6">💳 Pagos e Integraciones</td></tr>
+        <tr><td class="feat-name">MercadoPago (cobros online)</td><td><span class="chk n">✗</span></td><td><span class="chk n">✗</span></td><td><span class="chk n">✗</span></td><td><span class="chk y">✓</span></td><td><span class="chk n">✗</span></td></tr>
+        <tr><td class="feat-name">WhatsApp Business API</td><td><span class="chk n">✗</span></td><td><span class="chk n">✗</span></td><td><span class="chk n">✗</span></td><td><span class="chk y">✓</span></td><td><span class="chk n">✗</span></td></tr>
+        <tr><td class="feat-name">Email / SMTP (confirmaciones)</td><td><span class="chk n">✗</span></td><td><span class="chk n">✗</span></td><td><span class="chk n">✗</span></td><td><span class="chk y">✓</span></td><td><span class="chk n">✗</span></td></tr>
+        <tr><td class="feat-name">Códigos QR por reserva</td><td><span class="chk n">✗</span></td><td><span class="chk n">✗</span></td><td><span class="chk n">✗</span></td><td><span class="chk y">✓</span></td><td><span class="chk n">✗</span></td></tr>
+        <tr><td class="feat-name">Cloud storage (S3/R2)</td><td><span class="chk n">✗</span></td><td><span class="chk n">✗</span></td><td><span class="chk n">✗</span></td><td><span class="chk y">✓</span></td><td><span class="chk n">✗</span></td></tr>
+
+        <tr><td class="feat-cat" colspan="6">📊 Reportes y Análisis</td></tr>
+        <tr><td class="feat-name">Dashboard con métricas</td><td><span class="chk p">Hojas</span></td><td><span class="chk p">Básico</span></td><td><span class="chk p">Básico</span></td><td><span class="chk y">✓ Avanzado</span></td><td><span class="chk p">Básico</span></td></tr>
+        <tr><td class="feat-name">Exportar CSV / JSON</td><td><span class="chk n">✗</span></td><td><span class="chk y">✓</span></td><td><span class="chk y">✓</span></td><td><span class="chk y">✓</span></td><td><span class="chk y">✓</span></td></tr>
+        <tr><td class="feat-name">Fórmulas / cálculos automáticos</td><td><span class="chk y">✓</span></td><td><span class="chk n">✗</span></td><td><span class="chk n">✗</span></td><td><span class="chk p">Precios</span></td><td><span class="chk n">✗</span></td></tr>
+
+        <tr><td class="feat-cat" colspan="6">🚀 Despliegue e Infraestructura</td></tr>
+        <tr><td class="feat-name">Sin servidor (offline-first)</td><td><span class="chk n">✗</span></td><td><span class="chk y">✓</span></td><td><span class="chk y">✓</span></td><td><span class="chk n">✗</span></td><td><span class="chk y">✓</span></td></tr>
+        <tr><td class="feat-name">Deploy en Railway / Render</td><td><span class="chk n">✗</span></td><td><span class="chk n">✗</span></td><td><span class="chk n">✗</span></td><td><span class="chk y">✓</span></td><td><span class="chk n">✗</span></td></tr>
+        <tr><td class="feat-name">Docker / containerizado</td><td><span class="chk n">✗</span></td><td><span class="chk n">✗</span></td><td><span class="chk n">✗</span></td><td><span class="chk y">✓</span></td><td><span class="chk n">✗</span></td></tr>
+        <tr><td class="feat-name">Hosting estático (cPanel/Netlify)</td><td><span class="chk n">✗</span></td><td><span class="chk y">✓</span></td><td><span class="chk y">✓</span></td><td><span class="chk n">✗</span></td><td><span class="chk y">✓</span></td></tr>
+        <tr><td class="feat-name">Setup en 3 comandos</td><td><span class="chk p">Parcial</span></td><td><span class="chk y">✓ Doble clic</span></td><td><span class="chk y">✓ Doble clic</span></td><td><span class="chk y">✓ npm</span></td><td><span class="chk y">✓</span></td></tr>
+
+        <tr><td class="feat-cat" colspan="6">📦 Comercialización</td></tr>
+        <tr><td class="feat-name">Propuesta comercial PDF</td><td><span class="chk n">✗</span></td><td><span class="chk n">✗</span></td><td><span class="chk n">✗</span></td><td><span class="chk n">✗</span></td><td><span class="chk y">✓</span></td></tr>
+        <tr><td class="feat-name">Contrato de implementación</td><td><span class="chk n">✗</span></td><td><span class="chk n">✗</span></td><td><span class="chk n">✗</span></td><td><span class="chk n">✗</span></td><td><span class="chk y">✓</span></td></tr>
+        <tr><td class="feat-name">Manual de usuario</td><td><span class="chk n">✗</span></td><td><span class="chk n">✗</span></td><td><span class="chk n">✗</span></td><td><span class="chk y">✓ README</span></td><td><span class="chk y">✓ PDF+DOCX</span></td></tr>
+        <tr><td class="feat-name">Plan de capacitación</td><td><span class="chk n">✗</span></td><td><span class="chk n">✗</span></td><td><span class="chk n">✗</span></td><td><span class="chk n">✗</span></td><td><span class="chk y">✓</span></td></tr>
+        <tr><td class="feat-name">White-label (marca propia)</td><td><span class="chk n">✗</span></td><td><span class="chk n">✗</span></td><td><span class="chk y">✓</span></td><td><span class="chk y">✓</span></td><td><span class="chk y">✓</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════ MARKET ══════════════════════════════════ -->
+<section id="tab-market" class="section">
+  <div class="section-title">Comparativa de Mercado</div>
+  <div class="section-sub">ReservaOS vs principales alternativas para balnearios, cabañas y centros recreativos en México y LATAM</div>
+
+  <div class="market-grid">
+
+    <!-- NUESTRA SOLUCIÓN -->
+    <div class="mkt-card highlight">
+      <div class="mkt-name">ReservaOS Pro</div>
+      <div class="mkt-origin">🇲🇽 Jalisco, México · Solución propia</div>
+      <div class="mkt-price">$9,500–$35,000 <span>MXN implementación + desde $1,500/mes</span></div>
+      <div class="mkt-desc">Sistema 100% a medida para balnearios y parques acuáticos mexicanos. Pago único + mantenimiento. Sin comisiones por reserva.</div>
+      <div class="mkt-pros">
+        <div class="label">Ventajas</div>
+        <ul class="mkt-list">
+          <li>100% personalizable y en español</li>
+          <li>Sin comisión por reserva (pago fijo)</li>
+          <li>MercadoPago nativo + WhatsApp</li>
+          <li>Código propio, sin dependencia de proveedor</li>
+          <li>Versión offline disponible (sin internet)</li>
+          <li>Precio accesible para PyMEs mexicanas</li>
+          <li>Soporte local y capacitación incluida</li>
+        </ul>
+      </div>
+      <div class="mkt-cons">
+        <div class="label">Limitaciones</div>
+        <ul class="mkt-list">
+          <li>Sin app móvil nativa (aún)</li>
+          <li>Requiere implementación técnica</li>
+          <li>Base de usuarios pequeña (inicio)</li>
+        </ul>
+      </div>
+      <div class="mkt-score">
+        <div class="score-pill"><span class="val hi">A+</span>Precio</div>
+        <div class="score-pill"><span class="val hi">A</span>Localización</div>
+        <div class="score-pill"><span class="val mid">B+</span>Features</div>
+        <div class="score-pill"><span class="val hi">A</span>Soporte</div>
+      </div>
+    </div>
+
+    <!-- Sirvoy -->
+    <div class="mkt-card">
+      <div class="mkt-name">Sirvoy</div>
+      <div class="mkt-origin">🇸🇪 Suecia · Internacional</div>
+      <div class="mkt-price">$9–$49 <span>USD/mes (+ 1% comisión transacciones)</span></div>
+      <div class="mkt-desc">Sistema de reservas para hospedaje, cabañas y hoteles boutique. Interfaz en inglés/español. Muy popular en LATAM por su precio.</div>
+      <div class="mkt-pros">
+        <div class="label">Ventajas</div>
+        <ul class="mkt-list">
+          <li>Precio bajo (desde $9 USD/mes)</li>
+          <li>Canal manager incluido (Booking, Airbnb)</li>
+          <li>App móvil disponible</li>
+          <li>Soporte 24/7</li>
+        </ul>
+      </div>
+      <div class="mkt-cons">
+        <div class="label">Limitaciones</div>
+        <ul class="mkt-list">
+          <li>Sin MercadoPago nativo</li>
+          <li>No adaptado a balnearios/piscinas</li>
+          <li>Comisión sobre transacciones</li>
+          <li>Sin WhatsApp Business integrado</li>
+          <li>Personalización limitada</li>
+        </ul>
+      </div>
+      <div class="mkt-score">
+        <div class="score-pill"><span class="val hi">A</span>Precio</div>
+        <div class="score-pill"><span class="val lo">C</span>Localización</div>
+        <div class="score-pill"><span class="val mid">B</span>Features</div>
+        <div class="score-pill"><span class="val mid">B</span>Soporte</div>
+      </div>
+    </div>
+
+    <!-- Reservamos -->
+    <div class="mkt-card">
+      <div class="mkt-name">Reservamos / HotelBeds</div>
+      <div class="mkt-origin">🇲🇽 México · Regional</div>
+      <div class="mkt-price">Comisión <span>del 10–18% por reserva + setup</span></div>
+      <div class="mkt-desc">Plataforma de distribución turística enfocada en hoteles y resorts. Fuerte en México pero orientada a distribución, no a gestión operativa directa.</div>
+      <div class="mkt-pros">
+        <div class="label">Ventajas</div>
+        <ul class="mkt-list">
+          <li>Red de distribución amplia</li>
+          <li>Reconocimiento de marca en México</li>
+          <li>Integración con OTAs</li>
+        </ul>
+      </div>
+      <div class="mkt-cons">
+        <div class="label">Limitaciones</div>
+        <ul class="mkt-list">
+          <li>Comisión alta (10–18%) por reserva</li>
+          <li>No apto para balnearios pequeños</li>
+          <li>Sin gestión de servicios recreativos</li>
+          <li>Sin WhatsApp ni notificaciones</li>
+          <li>Dependencia total del proveedor</li>
+        </ul>
+      </div>
+      <div class="mkt-score">
+        <div class="score-pill"><span class="val lo">D</span>Precio</div>
+        <div class="score-pill"><span class="val mid">B</span>Localización</div>
+        <div class="score-pill"><span class="val mid">B-</span>Features</div>
+        <div class="score-pill"><span class="val mid">B</span>Soporte</div>
+      </div>
+    </div>
+
+    <!-- FareHarbor -->
+    <div class="mkt-card">
+      <div class="mkt-name">FareHarbor</div>
+      <div class="mkt-origin">🇺🇸 EE.UU. · Internacional (Booking.com)</div>
+      <div class="mkt-price">Gratis* <span>+ 6% comisión por reserva al cliente</span></div>
+      <div class="mkt-desc">Líder mundial en reservas para actividades, tours y experiencias. Propiedad de Booking.com. Enfocado en actividades de aventura y turismo experiencial.</div>
+      <div class="mkt-pros">
+        <div class="label">Ventajas</div>
+        <ul class="mkt-list">
+          <li>Sin costo mensual para el operador</li>
+          <li>Muy maduro y robusto</li>
+          <li>Integración con canales globales</li>
+          <li>App móvil completa</li>
+        </ul>
+      </div>
+      <div class="mkt-cons">
+        <div class="label">Limitaciones</div>
+        <ul class="mkt-list">
+          <li>6% de comisión cargada al cliente</li>
+          <li>No acepta MercadoPago</li>
+          <li>Interfaz en inglés principalmente</li>
+          <li>No apto para balnearios (enfoque tours)</li>
+          <li>Dependencia total de Booking.com</li>
+          <li>Sin WhatsApp ni SMS local</li>
+        </ul>
+      </div>
+      <div class="mkt-score">
+        <div class="score-pill"><span class="val mid">B</span>Precio</div>
+        <div class="score-pill"><span class="val lo">D</span>Localización</div>
+        <div class="score-pill"><span class="val hi">A</span>Features</div>
+        <div class="score-pill"><span class="val mid">B</span>Soporte</div>
+      </div>
+    </div>
+
+    <!-- Cloudbeds -->
+    <div class="mkt-card">
+      <div class="mkt-name">Cloudbeds</div>
+      <div class="mkt-origin">🇺🇸 EE.UU. · Enterprise</div>
+      <div class="mkt-price">$300–$800+ <span>USD/mes según propiedades</span></div>
+      <div class="mkt-desc">PMS (Property Management System) completo para hoteles y resorts. El más potente del mercado pero orientado a hoteles medianos y grandes.</div>
+      <div class="mkt-pros">
+        <div class="label">Ventajas</div>
+        <ul class="mkt-list">
+          <li>PMS completo + channel manager</li>
+          <li>Revenue management</li>
+          <li>Reportes avanzados</li>
+          <li>Soporte 24/7 en español</li>
+        </ul>
+      </div>
+      <div class="mkt-cons">
+        <div class="label">Limitaciones</div>
+        <ul class="mkt-list">
+          <li>Precio muy alto ($300+/mes)</li>
+          <li>Sobredimensionado para balnearios</li>
+          <li>Sin MercadoPago nativo</li>
+          <li>Contrato anual obligatorio</li>
+          <li>Curva de aprendizaje alta</li>
+        </ul>
+      </div>
+      <div class="mkt-score">
+        <div class="score-pill"><span class="val lo">F</span>Precio</div>
+        <div class="score-pill"><span class="val mid">B</span>Localización</div>
+        <div class="score-pill"><span class="val hi">A+</span>Features</div>
+        <div class="score-pill"><span class="val hi">A</span>Soporte</div>
+      </div>
+    </div>
+
+    <!-- Mindbody -->
+    <div class="mkt-card">
+      <div class="mkt-name">Mindbody</div>
+      <div class="mkt-origin">🇺🇸 EE.UU. · Wellness / Recreación</div>
+      <div class="mkt-price">$129–$499 <span>USD/mes</span></div>
+      <div class="mkt-desc">Plataforma para centros de bienestar, gimnasios y actividades recreativas. Popular en spas y centros de wellness, no en balnearios al aire libre.</div>
+      <div class="mkt-pros">
+        <div class="label">Ventajas</div>
+        <ul class="mkt-list">
+          <li>Ideal para wellness y actividades</li>
+          <li>App móvil para clientes</li>
+          <li>Membresías y clases incluidas</li>
+        </ul>
+      </div>
+      <div class="mkt-cons">
+        <div class="label">Limitaciones</div>
+        <ul class="mkt-list">
+          <li>Precio muy alto para PyMEs</li>
+          <li>Sin soporte para hospedaje/cabañas</li>
+          <li>Sin MercadoPago</li>
+          <li>No localizado para México</li>
+          <li>Sin WhatsApp integrado</li>
+        </ul>
+      </div>
+      <div class="mkt-score">
+        <div class="score-pill"><span class="val lo">F</span>Precio</div>
+        <div class="score-pill"><span class="val lo">D</span>Localización</div>
+        <div class="score-pill"><span class="val mid">B</span>Features</div>
+        <div class="score-pill"><span class="val mid">B</span>Soporte</div>
+      </div>
+    </div>
+
+  </div><!-- /market-grid -->
+
+  <!-- BIG COMPARE TABLE -->
+  <div class="section-title" style="margin-top:8px;margin-bottom:6px;font-size:15px">Tabla comparativa detallada</div>
+  <div class="big-compare">
+    <table class="bc">
+      <thead>
+        <tr>
+          <th>Criterio</th>
+          <th class="ours">ReservaOS Pro 🏆</th>
+          <th>Sirvoy</th>
+          <th>Reservamos</th>
+          <th>FareHarbor</th>
+          <th>Cloudbeds</th>
+          <th>Mindbody</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td class="cat" colspan="7">💰 Costos</td></tr>
+        <tr>
+          <td>Costo mensual</td>
+          <td class="ours win">$1,500–$4,500 MXN</td>
+          <td class="neu">$150–$900 MXN</td>
+          <td class="neu">Variable</td>
+          <td class="win">$0/mes</td>
+          <td class="los">$5,500–$14,000 MXN</td>
+          <td class="los">$2,400–$9,000 MXN</td>
+        </tr>
+        <tr>
+          <td>Comisión por reserva</td>
+          <td class="ours win">0%</td>
+          <td class="neu">~1%</td>
+          <td class="los">10–18%</td>
+          <td class="los">6% al cliente</td>
+          <td class="win">0%</td>
+          <td class="win">0%</td>
+        </tr>
+        <tr>
+          <td>Pago de implementación</td>
+          <td class="ours neu">$9,500–$35,000 MXN</td>
+          <td class="win">Ninguno</td>
+          <td class="neu">Setup fee variable</td>
+          <td class="win">Ninguno</td>
+          <td class="los">Alto (cotización)</td>
+          <td class="los">Alto (cotización)</td>
+        </tr>
+        <tr>
+          <td>Contrato mínimo</td>
+          <td class="ours win">Mensual</td>
+          <td class="win">Mensual</td>
+          <td class="los">Anual</td>
+          <td class="win">Sin contrato</td>
+          <td class="los">Anual</td>
+          <td class="los">Anual</td>
+        </tr>
+
+        <tr><td class="cat" colspan="7">🇲🇽 Localización México</td></tr>
+        <tr>
+          <td>MercadoPago integrado</td>
+          <td class="ours win"><span class="badge-pill g">SÍ</span></td>
+          <td class="los"><span class="badge-pill r">NO</span></td>
+          <td class="neu"><span class="badge-pill a">Parcial</span></td>
+          <td class="los"><span class="badge-pill r">NO</span></td>
+          <td class="los"><span class="badge-pill r">NO</span></td>
+          <td class="los"><span class="badge-pill r">NO</span></td>
+        </tr>
+        <tr>
+          <td>WhatsApp Business</td>
+          <td class="ours win"><span class="badge-pill g">SÍ</span></td>
+          <td class="los"><span class="badge-pill r">NO</span></td>
+          <td class="los"><span class="badge-pill r">NO</span></td>
+          <td class="los"><span class="badge-pill r">NO</span></td>
+          <td class="los"><span class="badge-pill r">NO</span></td>
+          <td class="los"><span class="badge-pill r">NO</span></td>
+        </tr>
+        <tr>
+          <td>Idioma / soporte local</td>
+          <td class="ours win">100% español MX</td>
+          <td class="neu">Español (EU)</td>
+          <td class="win">Español MX</td>
+          <td class="neu">Inglés mainly</td>
+          <td class="neu">Español (EU)</td>
+          <td class="los">Inglés</td>
+        </tr>
+        <tr>
+          <td>RFC / facturación MX</td>
+          <td class="ours win"><span class="badge-pill g">Adaptable</span></td>
+          <td class="los"><span class="badge-pill r">NO</span></td>
+          <td class="win"><span class="badge-pill g">SÍ</span></td>
+          <td class="los"><span class="badge-pill r">NO</span></td>
+          <td class="neu"><span class="badge-pill a">Parcial</span></td>
+          <td class="los"><span class="badge-pill r">NO</span></td>
+        </tr>
+
+        <tr><td class="cat" colspan="7">🏊 Adecuación a Balnearios</td></tr>
+        <tr>
+          <td>Gestión de cabañas/bungalows</td>
+          <td class="ours win"><span class="badge-pill g">SÍ</span></td>
+          <td class="win"><span class="badge-pill g">SÍ</span></td>
+          <td class="neu"><span class="badge-pill a">Parcial</span></td>
+          <td class="los"><span class="badge-pill r">NO</span></td>
+          <td class="win"><span class="badge-pill g">SÍ</span></td>
+          <td class="los"><span class="badge-pill r">NO</span></td>
+        </tr>
+        <tr>
+          <td>Gestión de albercas / áreas</td>
+          <td class="ours win"><span class="badge-pill g">SÍ</span></td>
+          <td class="los"><span class="badge-pill r">NO</span></td>
+          <td class="los"><span class="badge-pill r">NO</span></td>
+          <td class="neu"><span class="badge-pill a">Parcial</span></td>
+          <td class="los"><span class="badge-pill r">NO</span></td>
+          <td class="los"><span class="badge-pill r">NO</span></td>
+        </tr>
+        <tr>
+          <td>Sin internet (offline-first)</td>
+          <td class="ours win"><span class="badge-pill g">SÍ (v3)</span></td>
+          <td class="los"><span class="badge-pill r">NO</span></td>
+          <td class="los"><span class="badge-pill r">NO</span></td>
+          <td class="los"><span class="badge-pill r">NO</span></td>
+          <td class="los"><span class="badge-pill r">NO</span></td>
+          <td class="los"><span class="badge-pill r">NO</span></td>
+        </tr>
+        <tr>
+          <td>Personalizable / a medida</td>
+          <td class="ours win">100% código propio</td>
+          <td class="neu">Limitado</td>
+          <td class="neu">Limitado</td>
+          <td class="neu">Templates</td>
+          <td class="neu">Moderado</td>
+          <td class="los">Muy limitado</td>
+        </tr>
+
+        <tr><td class="cat" colspan="7">⚙️ Tecnología</td></tr>
+        <tr>
+          <td>Open source / código propio</td>
+          <td class="ours win"><span class="badge-pill g">SÍ</span></td>
+          <td class="los"><span class="badge-pill r">NO</span></td>
+          <td class="los"><span class="badge-pill r">NO</span></td>
+          <td class="los"><span class="badge-pill r">NO</span></td>
+          <td class="los"><span class="badge-pill r">NO</span></td>
+          <td class="los"><span class="badge-pill r">NO</span></td>
+        </tr>
+        <tr>
+          <td>API REST propia</td>
+          <td class="ours win"><span class="badge-pill g">SÍ (Pro)</span></td>
+          <td class="neu"><span class="badge-pill a">Limitada</span></td>
+          <td class="neu"><span class="badge-pill a">Sí</span></td>
+          <td class="win"><span class="badge-pill g">Sí</span></td>
+          <td class="win"><span class="badge-pill g">Sí</span></td>
+          <td class="win"><span class="badge-pill g">Sí</span></td>
+        </tr>
+        <tr>
+          <td>App móvil nativa</td>
+          <td class="ours los"><span class="badge-pill r">En desarrollo</span></td>
+          <td class="win"><span class="badge-pill g">SÍ</span></td>
+          <td class="neu"><span class="badge-pill a">Parcial</span></td>
+          <td class="win"><span class="badge-pill g">SÍ</span></td>
+          <td class="win"><span class="badge-pill g">SÍ</span></td>
+          <td class="win"><span class="badge-pill g">SÍ</span></td>
+        </tr>
+        <tr>
+          <td>Integración con Booking/Airbnb</td>
+          <td class="ours los"><span class="badge-pill r">No</span></td>
+          <td class="win"><span class="badge-pill g">SÍ</span></td>
+          <td class="win"><span class="badge-pill g">SÍ</span></td>
+          <td class="win"><span class="badge-pill g">SÍ</span></td>
+          <td class="win"><span class="badge-pill g">SÍ</span></td>
+          <td class="los"><span class="badge-pill r">No</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════ CHANGELOG ══════════════════════════════════ -->
+<section id="tab-changelog" class="section">
+  <div class="section-title">Changelog Detallado</div>
+  <div class="section-sub">Registro completo de cambios entre versiones con diferencias técnicas y funcionales</div>
+
+  <!-- v0 → v2 -->
+  <div class="cl-entry open">
+    <div class="cl-head" onclick="toggleCl(this)">
+      <span class="cl-ver">v0 → v2</span>
+      <span class="cl-date">Jun 15 → Jun 16, 2026</span>
+      <span class="cl-summary">Pivot de SaaS interno a producto cliente — primera entrega Chimulco</span>
+      <span class="cl-arrow">▶</span>
+    </div>
+    <div class="cl-body">
+      <div class="cl-group">
+        <div class="cl-group-title added">AGREGADO</div>
+        <ul class="cl-items">
+          <li>Sistema de reservas para 24 servicios (bungalows, VIP, campers, cabinas, albercas)</li>
+          <li>Vista de calendario de disponibilidad</li>
+          <li>Panel administrador protegido (Ctrl+Shift+A)</li>
+          <li>Persistencia via localStorage (sin servidor)</li>
+          <li>Exportación CSV/JSON desde panel admin</li>
+          <li>Scripts de inicio para Windows (.bat) y Mac/Linux (.sh)</li>
+          <li>Instrucciones de uso para cliente no técnico</li>
+        </ul>
+      </div>
+      <div class="cl-group">
+        <div class="cl-group-title changed">CAMBIOS ARQUITECTÓNICOS</div>
+        <ul class="cl-items">
+          <li>De React+Node.js → HTML5 puro (eliminación total de dependencias)</li>
+          <li>De SQLite backend → localStorage del navegador</li>
+          <li>De multi-archivo → single HTML file (todo inline)</li>
+          <li>De SaaS multi-usuario → cliente único (Chimulco)</li>
+          <li>Reducción de complejidad: de 45 archivos a 4 archivos</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- v2 → v3 -->
+  <div class="cl-entry">
+    <div class="cl-head" onclick="toggleCl(this)">
+      <span class="cl-ver">v2 → v3</span>
+      <span class="cl-date">Jun 16 → Jun 17, 2026</span>
+      <span class="cl-summary">Mejoras de UI/UX + generalización white-label (+23 KB de features)</span>
+      <span class="cl-arrow">▶</span>
+    </div>
+    <div class="cl-body">
+      <div class="cl-group">
+        <div class="cl-group-title added">AGREGADO</div>
+        <ul class="cl-items">
+          <li>UI rediseñada con gradientes y sombras mejoradas</li>
+          <li>Validaciones de formulario más robustas</li>
+          <li>Sistema de notificaciones/feedback visual en pantalla</li>
+          <li>Mejor soporte responsive (mobile-first)</li>
+          <li>Soporte explícito para embed vía iframe</li>
+          <li>Documentación de servidor Python para red interna</li>
+        </ul>
+      </div>
+      <div class="cl-group">
+        <div class="cl-group-title changed">MODIFICADO</div>
+        <ul class="cl-items">
+          <li>Título: "Chimulco" → "ReservaOS" (white-label genérico)</li>
+          <li>Paleta de colores refinada (--primary, --accent actualizados)</li>
+          <li>Tamaño de 98 KB → 121 KB (+23 KB nuevas funcionalidades)</li>
+          <li>Estructura CSS variables más completa</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- v3 → Pro -->
+  <div class="cl-entry">
+    <div class="cl-head" onclick="toggleCl(this)">
+      <span class="cl-ver">v3 → Pro</span>
+      <span class="cl-date">Jun 17, 2026</span>
+      <span class="cl-summary">Salto a backend producción — Node.js + integraciones externas + cloud deploy</span>
+      <span class="cl-arrow">▶</span>
+    </div>
+    <div class="cl-body">
+      <div class="cl-group">
+        <div class="cl-group-title arch">ARQUITECTURA</div>
+        <ul class="cl-items">
+          <li>De HTML standalone → Node.js + Express API REST completa</li>
+          <li>De localStorage → SQLite con schema SQL, seeds y migraciones</li>
+          <li>De single file → arquitectura modular (routes/, middleware/, integrations/, db/)</li>
+          <li>Multi-usuario real con JWT access + refresh tokens</li>
+          <li>Docker containerizado para deploy reproducible</li>
+          <li>Configuraciones Railway + Render (render.yaml, railway.json)</li>
+        </ul>
+      </div>
+      <div class="cl-group">
+        <div class="cl-group-title integr">INTEGRACIONES NUEVAS</div>
+        <ul class="cl-items">
+          <li>MercadoPago — cobros online con webhook de pagos</li>
+          <li>WhatsApp Business Cloud API — notificaciones automáticas</li>
+          <li>Email SMTP (Gmail/Mailgun) — confirmaciones y recordatorios</li>
+          <li>AWS S3 / Cloudflare R2 — almacenamiento de imágenes en cloud</li>
+          <li>QR codes — generación automática por reserva</li>
+        </ul>
+      </div>
+      <div class="cl-group">
+        <div class="cl-group-title added">FEATURES NUEVAS</div>
+        <ul class="cl-items">
+          <li>Dashboard con métricas en tiempo real (route: /api/dashboard)</li>
+          <li>CRUD completo de clientes con historial</li>
+          <li>Estados de reserva: pendiente → confirmada → check-in → check-out → cancelada</li>
+          <li>Sistema de folios / numeración automática de reservas</li>
+          <li>Rate limiting (100 req/min) para protección de API</li>
+          <li>File upload con multer (imágenes de servicios)</li>
+          <li>Suite de tests automatizados (tests/run.js)</li>
+          <li>README completo con guía de instalación y variables de entorno</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Pro → Paquete Comercial -->
+  <div class="cl-entry">
+    <div class="cl-head" onclick="toggleCl(this)">
+      <span class="cl-ver">v3 → Pkg</span>
+      <span class="cl-date">Jun 16, 2026</span>
+      <span class="cl-summary">Empaquetado comercial — v3 + documentación completa + modelos de precios</span>
+      <span class="cl-arrow">▶</span>
+    </div>
+    <div class="cl-body">
+      <div class="cl-group">
+        <div class="cl-group-title added">DOCUMENTACIÓN NUEVA</div>
+        <ul class="cl-items">
+          <li>Propuesta Comercial (PDF + DOCX editable)</li>
+          <li>Ficha Técnica con especificaciones del sistema</li>
+          <li>Contrato de Implementación editable (PDF + DOCX)</li>
+          <li>Manual del Administrador (PDF + DOCX)</li>
+          <li>Guía del Cliente para usuario final</li>
+          <li>Plan de Capacitación con programa estructurado</li>
+          <li>Guía de Despliegue y Hosting</li>
+          <li>LEEME_PRIMERO.txt con estructura del paquete</li>
+        </ul>
+      </div>
+      <div class="cl-group">
+        <div class="cl-group-title changed">MODELO DE NEGOCIO</div>
+        <ul class="cl-items">
+          <li>Tier Básico: $9,500 MXN implementación + $1,500/mes mantenimiento</li>
+          <li>Tier Profesional: $19,500 MXN + $2,500/mes</li>
+          <li>Tier Enterprise: $35,000 MXN + $4,500/mes</li>
+          <li>Sistema incluido: ReservaOS v3 HTML (compatible con todos los tiers)</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+</section>
+
+</main>
+</div>
+
+<script>
+function showTab(id, el) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('tab-' + id).classList.add('active');
+  el.classList.add('active');
+}
+
+function toggleCl(head) {
+  const entry = head.parentElement;
+  entry.classList.toggle('open');
+}
+
+// Auto-update "last updated" date
+document.addEventListener('DOMContentLoaded', () => {
+  const badge = document.querySelector('#header .badge');
+  if (badge) {
+    const now = new Date();
+    const months = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
+    badge.textContent = `Actualizado: ${now.getDate()} ${months[now.getMonth()]} ${now.getFullYear()}`;
+  }
+});
+</script>
+</body>
+</html>
