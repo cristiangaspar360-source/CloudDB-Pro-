@@ -23,166 +23,239 @@ html,body{min-height:100%;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI
 ::-webkit-scrollbar-track{background:var(--bg2)}
 ::-webkit-scrollbar-thumb{background:var(--border2);border-radius:99px}
 #shell{display:flex;flex-direction:column;min-height:100vh}
-#header{position:sticky;top:0;z-index:100;background:var(--bg2);border-bottom:1px solid var(--border);padding:0 28px;height:52px;display:flex;align-items:center;gap:16px}
-#header .logo{font-size:15px;font-weight:700;color:var(--accent3);display:flex;align-items:center;gap:8px}
+
+/* ── HEADER ── */
+#header{position:sticky;top:0;z-index:100;background:var(--bg2);border-bottom:1px solid var(--border);padding:0 24px;height:52px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.logo{font-size:15px;font-weight:700;color:var(--accent3);display:flex;align-items:center;gap:8px}
 .dot{width:8px;height:8px;border-radius:50%;background:var(--teal2);display:inline-block;animation:pulse 2s ease infinite}
-#header .subtitle{font-size:11px;color:var(--text3);border-left:1px solid var(--border);padding-left:16px;margin-left:4px}
-#header .hbadge{margin-left:auto;font-size:10px;font-weight:600;background:var(--accent);color:#fff;padding:3px 10px;border-radius:99px}
-#tabs{display:flex;gap:2px;padding:16px 28px 0;background:var(--bg2);border-bottom:1px solid var(--border)}
-.tab{padding:8px 18px;font-size:12px;font-weight:600;color:var(--text3);border-radius:var(--radius) var(--radius) 0 0;cursor:pointer;border:1px solid transparent;border-bottom:none;transition:.15s}
+.subtitle{font-size:11px;color:var(--text3);border-left:1px solid var(--border);padding-left:14px}
+.hright{margin-left:auto;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.hbadge{font-size:10px;font-weight:600;background:var(--accent);color:#fff;padding:3px 10px;border-radius:99px}
+.search-wrap{position:relative}
+.search-wrap input{background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius);padding:5px 10px 5px 28px;color:var(--text);font-size:11px;width:180px;outline:none;transition:.2s}
+.search-wrap input:focus{border-color:var(--accent);width:220px}
+.search-wrap input::placeholder{color:var(--text3)}
+.search-wrap .si{position:absolute;left:8px;top:50%;transform:translateY(-50%);color:var(--text3);font-size:12px;pointer-events:none}
+.hbtn{padding:5px 12px;border-radius:var(--radius);border:1px solid var(--border);background:var(--bg3);color:var(--text2);font-size:11px;font-weight:600;cursor:pointer;transition:.15s;display:flex;align-items:center;gap:5px}
+.hbtn:hover{border-color:var(--accent);color:var(--accent3)}
+
+/* ── TABS ── */
+#tabs{display:flex;gap:2px;padding:14px 24px 0;background:var(--bg2);border-bottom:1px solid var(--border);overflow-x:auto}
+.tab{padding:8px 16px;font-size:12px;font-weight:600;color:var(--text3);border-radius:var(--radius) var(--radius) 0 0;cursor:pointer;border:1px solid transparent;border-bottom:none;transition:.15s;white-space:nowrap}
 .tab:hover{color:var(--text2);background:var(--bg3)}
 .tab.active{color:var(--accent3);background:var(--bg);border-color:var(--border);border-bottom:1px solid var(--bg)}
-#content{flex:1;padding:28px}
-.section{display:none}.section.active{display:block;animation:fadeIn .2s ease}
-.section-title{font-size:18px;font-weight:700;color:var(--text);margin-bottom:6px}
-.section-sub{font-size:12px;color:var(--text3);margin-bottom:24px}
 
-/* STATS */
-.stats-bar{display:flex;gap:16px;margin-bottom:28px;flex-wrap:wrap}
-.stat-box{flex:1;min-width:130px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius2);padding:14px 18px}
-.stat-val{font-size:26px;font-weight:800;line-height:1;margin-bottom:4px}
+/* ── CONTENT ── */
+#content{flex:1;padding:24px}
+.section{display:none}.section.active{display:block;animation:fadeIn .2s ease}
+.section-title{font-size:17px;font-weight:700;color:var(--text);margin-bottom:5px}
+.section-sub{font-size:12px;color:var(--text3);margin-bottom:20px}
+
+/* ── STATS ── */
+.stats-bar{display:flex;gap:14px;margin-bottom:24px;flex-wrap:wrap}
+.stat-box{flex:1;min-width:120px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius2);padding:13px 16px}
+.stat-val{font-size:24px;font-weight:800;line-height:1;margin-bottom:3px}
 .stat-label{font-size:10px;color:var(--text3);font-weight:600;text-transform:uppercase;letter-spacing:.5px}
 
-/* TIMELINE */
+/* ── TIMELINE ── */
 .timeline{position:relative;padding-left:32px}
 .timeline::before{content:'';position:absolute;left:11px;top:8px;bottom:8px;width:2px;background:linear-gradient(to bottom,var(--accent),var(--teal2),var(--amber2));border-radius:99px}
-.tl-item{position:relative;margin-bottom:28px}
+.tl-item{position:relative;margin-bottom:24px}
 .tl-dot{position:absolute;left:-32px;top:14px;width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:700;border:2px solid var(--bg);z-index:1;color:#fff}
-.tl-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius2);padding:18px 22px;transition:.2s}
+.tl-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius2);padding:16px 20px;transition:.2s;position:relative}
 .tl-card:hover{border-color:var(--border2);box-shadow:var(--shadow)}
-.tl-header{display:flex;align-items:flex-start;gap:12px;margin-bottom:14px}
-.tl-icon{font-size:26px;line-height:1}
-.tl-meta{flex:1}
-.tl-name{font-size:14px;font-weight:700;color:var(--text);margin-bottom:2px}
+.tl-actions{position:absolute;top:12px;right:12px;display:flex;gap:6px;opacity:0;transition:.2s}
+.tl-card:hover .tl-actions{opacity:1}
+.tl-header{display:flex;align-items:flex-start;gap:12px;margin-bottom:12px}
+.tl-icon{font-size:24px;line-height:1}
+.tl-meta{flex:1;min-width:0}
+.tl-name{font-size:13px;font-weight:700;color:var(--text);margin-bottom:2px}
 .tl-date{font-size:10px;color:var(--text3);margin-bottom:6px}
-.tl-tags{display:flex;flex-wrap:wrap;gap:5px}
-.tag{font-size:10px;font-weight:600;padding:2px 8px;border-radius:99px;border:1px solid}
+.tl-tags{display:flex;flex-wrap:wrap;gap:4px}
+.tag{font-size:10px;font-weight:600;padding:2px 7px;border-radius:99px;border:1px solid}
 .tag.stack{color:var(--accent3);border-color:var(--accent);background:rgba(99,102,241,.12)}
 .tag.feature{color:var(--teal3);border-color:var(--teal);background:rgba(13,148,136,.12)}
 .tag.deploy{color:var(--amber3);border-color:var(--amber);background:rgba(217,119,6,.12)}
 .tag.new{color:var(--green3);border-color:var(--green);background:rgba(5,150,105,.12)}
-.tl-desc{font-size:12px;color:var(--text2);line-height:1.7;margin-bottom:14px}
-.tl-features{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:6px}
-.feat-item{display:flex;align-items:center;gap:7px;font-size:11px;color:var(--text2);padding:5px 8px;background:var(--bg3);border-radius:var(--radius)}
-.tl-size{font-size:10px;color:var(--text3);margin-top:10px;padding-top:10px;border-top:1px solid var(--border)}
-.delta{display:inline-flex;align-items:center;gap:4px;font-size:10px;font-weight:600;padding:2px 8px;border-radius:99px;margin-left:8px}
+.tl-desc{font-size:12px;color:var(--text2);line-height:1.7;margin-bottom:12px}
+.tl-features{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:5px}
+.feat-item{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--text2);padding:5px 7px;background:var(--bg3);border-radius:var(--radius)}
+.tl-size{font-size:10px;color:var(--text3);margin-top:9px;padding-top:9px;border-top:1px solid var(--border)}
+.delta{display:inline-flex;align-items:center;font-size:10px;font-weight:600;padding:2px 7px;border-radius:99px;margin-left:6px}
 .delta.up{background:rgba(16,185,129,.15);color:var(--green2)}
 .delta.new{background:rgba(99,102,241,.15);color:var(--accent2)}
 
-/* MATRIX */
+/* ── MATRIX ── */
 .matrix-wrap{overflow-x:auto;border:1px solid var(--border);border-radius:var(--radius2)}
-table.matrix{width:100%;border-collapse:collapse;min-width:600px}
-.matrix th{background:var(--bg3);padding:10px 14px;font-size:11px;font-weight:700;color:var(--text2);text-align:center;border-bottom:1px solid var(--border);white-space:nowrap}
-.matrix th.feat-col{text-align:left;min-width:200px}
+table.matrix{width:100%;border-collapse:collapse;min-width:500px}
+.matrix th{background:var(--bg3);padding:9px 12px;font-size:11px;font-weight:700;color:var(--text2);text-align:center;border-bottom:1px solid var(--border);white-space:nowrap}
+.matrix th.feat-col{text-align:left;min-width:190px}
 .matrix th .ver-badge{display:block;font-size:9px;font-weight:400;color:var(--text3);margin-top:2px}
-.matrix td{padding:9px 14px;border-bottom:1px solid var(--border);font-size:11px;vertical-align:middle;text-align:center}
+.matrix td{padding:8px 12px;border-bottom:1px solid var(--border);font-size:11px;vertical-align:middle;text-align:center}
 .matrix td.feat-name{text-align:left;color:var(--text);font-weight:500}
-.matrix td.feat-cat{text-align:left;color:var(--text3);font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;background:var(--bg4);padding:6px 14px}
+.matrix td.feat-cat{text-align:left;color:var(--text3);font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;background:var(--bg4);padding:6px 12px}
 .matrix tr:last-child td{border-bottom:none}
 .matrix tr:hover td:not(.feat-cat){background:rgba(99,102,241,.04)}
-.chk-y{color:var(--green2);font-size:15px}
-.chk-n{color:var(--red2);font-size:15px;opacity:.5}
-.chk-p{color:var(--amber2);font-size:12px;font-weight:600}
+.chk-y{color:var(--green2);font-size:14px}
+.chk-n{color:var(--red2);font-size:14px;opacity:.4}
+.chk-p{color:var(--amber2);font-size:11px;font-weight:600}
 
-/* MARKET */
-.market-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:16px;margin-bottom:28px}
-.mkt-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius2);padding:18px;position:relative;overflow:hidden;transition:.2s}
+/* ── MARKET ── */
+.market-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px;margin-bottom:24px}
+.mkt-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius2);padding:16px;position:relative;overflow:hidden;transition:.2s}
 .mkt-card:hover{border-color:var(--border2);transform:translateY(-1px);box-shadow:var(--shadow)}
 .mkt-card.highlight{border-color:var(--accent);background:linear-gradient(135deg,var(--bg2),rgba(99,102,241,.06))}
 .mkt-card.highlight::before{content:'NUESTRA SOLUCIÓN';position:absolute;top:10px;right:-24px;background:var(--accent);color:#fff;font-size:9px;font-weight:700;padding:3px 28px;transform:rotate(35deg);letter-spacing:.5px}
-.mkt-name{font-size:13px;font-weight:700;color:var(--text);margin-bottom:3px}
-.mkt-origin{font-size:10px;color:var(--text3);margin-bottom:10px}
-.mkt-price{font-size:17px;font-weight:800;color:var(--accent2);margin-bottom:4px}
+.mkt-del{position:absolute;bottom:10px;right:10px;background:rgba(239,68,68,.15);color:var(--red2);border:none;border-radius:var(--radius);padding:3px 8px;font-size:10px;cursor:pointer;display:none}
+.mkt-card:hover .mkt-del{display:block}
+.mkt-name{font-size:13px;font-weight:700;color:var(--text);margin-bottom:2px}
+.mkt-origin{font-size:10px;color:var(--text3);margin-bottom:8px}
+.mkt-price{font-size:16px;font-weight:800;color:var(--accent2);margin-bottom:4px}
 .mkt-price span{font-size:11px;font-weight:400;color:var(--text3)}
-.mkt-desc{font-size:11px;color:var(--text2);line-height:1.6;margin-bottom:12px}
-.mkt-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px}
-.pros-label{color:var(--green2)}
-.cons-label{color:var(--red2)}
-.mkt-list{list-style:none;display:flex;flex-direction:column;gap:3px;margin-bottom:10px}
-.mkt-list li{font-size:11px;color:var(--text2);display:flex;align-items:flex-start;gap:5px}
+.mkt-desc{font-size:11px;color:var(--text2);line-height:1.6;margin-bottom:10px}
+.mkt-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-bottom:3px}
+.pros-label{color:var(--green2)}.cons-label{color:var(--red2)}
+.mkt-list{list-style:none;display:flex;flex-direction:column;gap:3px;margin-bottom:8px}
+.mkt-list li{font-size:11px;color:var(--text2);display:flex;align-items:flex-start;gap:4px}
 .pros-list li::before{content:'✓';color:var(--green2);flex-shrink:0}
 .cons-list li::before{content:'✗';color:var(--red2);opacity:.7;flex-shrink:0}
-.mkt-score{display:flex;gap:8px;margin-top:12px;padding-top:12px;border-top:1px solid var(--border)}
-.score-pill{flex:1;text-align:center;padding:5px 4px;background:var(--bg3);border-radius:var(--radius);font-size:9px;color:var(--text3)}
-.score-val{display:block;font-size:14px;font-weight:800;line-height:1.2}
+.mkt-score{display:flex;gap:6px;margin-top:10px;padding-top:10px;border-top:1px solid var(--border)}
+.score-pill{flex:1;text-align:center;padding:4px;background:var(--bg3);border-radius:var(--radius);font-size:9px;color:var(--text3)}
+.score-val{display:block;font-size:13px;font-weight:800;line-height:1.3}
 .score-hi{color:var(--green2)}.score-mid{color:var(--amber2)}.score-lo{color:var(--red2)}
 
-/* BIG COMPARE */
-.big-compare{overflow-x:auto;border:1px solid var(--border);border-radius:var(--radius2);margin-top:24px}
-table.bc{width:100%;border-collapse:collapse;min-width:700px}
-.bc th{background:var(--bg3);padding:10px 12px;font-size:11px;font-weight:700;color:var(--text2);border-bottom:1px solid var(--border);white-space:nowrap;text-align:center}
-.bc th:first-child{text-align:left;min-width:180px}
+/* ── CHANGELOG ── */
+.cl-entry{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius2);margin-bottom:12px;overflow:hidden}
+.cl-head{display:flex;align-items:center;gap:10px;padding:11px 16px;cursor:pointer;user-select:none;transition:.15s}
+.cl-head:hover{background:var(--bg3)}
+.cl-ver{font-size:12px;font-weight:800;color:var(--accent2);min-width:90px}
+.cl-date{font-size:11px;color:var(--text3);flex:1}
+.cl-summary{font-size:11px;color:var(--text2);flex:2}
+.cl-arr{color:var(--text3);font-size:11px;transition:.2s;margin-left:auto;flex-shrink:0}
+.cl-entry.open .cl-arr{transform:rotate(90deg)}
+.cl-del-btn{background:rgba(239,68,68,.12);color:var(--red2);border:none;border-radius:var(--radius);padding:2px 8px;font-size:10px;cursor:pointer;flex-shrink:0}
+.cl-body{display:none;padding:12px 16px;border-top:1px solid var(--border);background:var(--bg)}
+.cl-entry.open .cl-body{display:block}
+.cl-group{margin-bottom:10px}
+.cl-gtitle{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-bottom:5px}
+.cl-gtitle.added{color:var(--green2)}.cl-gtitle.changed{color:var(--amber2)}
+.cl-gtitle.arch{color:var(--accent2)}.cl-gtitle.integr{color:var(--teal2)}
+.cl-items{list-style:none;display:flex;flex-direction:column;gap:3px}
+.cl-items li{font-size:11px;color:var(--text2);display:flex;gap:5px;align-items:flex-start}
+.cl-items li::before{content:'→';color:var(--text3);flex-shrink:0}
+
+/* ── MODAL ── */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:300;display:none;align-items:center;justify-content:center;padding:16px}
+.modal-overlay.open{display:flex}
+.modal{background:var(--bg2);border:1px solid var(--border2);border-radius:var(--radius3);width:min(620px,100%);max-height:90vh;display:flex;flex-direction:column}
+.modal-head{padding:14px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+.modal-head h3{font-size:13px;font-weight:700;color:var(--text)}
+.modal-close{background:none;border:none;color:var(--text3);font-size:18px;cursor:pointer;line-height:1;padding:2px}
+.modal-close:hover{color:var(--text)}
+.modal-body{flex:1;overflow-y:auto;padding:18px}
+.modal-foot{padding:12px 18px;border-top:1px solid var(--border);display:flex;gap:8px;justify-content:flex-end;flex-shrink:0}
+
+/* ── FORM FIELDS ── */
+.frow{margin-bottom:14px}
+.frow label{display:block;font-size:11px;font-weight:600;color:var(--text2);margin-bottom:5px;text-transform:uppercase;letter-spacing:.4px}
+.frow input,.frow textarea,.frow select{width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius);padding:7px 10px;color:var(--text);font-size:12px;font-family:inherit;outline:none;transition:.2s;resize:vertical}
+.frow input:focus,.frow textarea:focus,.frow select:focus{border-color:var(--accent)}
+.frow textarea{min-height:70px}
+.frow .hint{font-size:10px;color:var(--text3);margin-top:4px}
+.fgrid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.fdivider{height:1px;background:var(--border);margin:16px 0}
+.fsection{font-size:11px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px}
+.flist-wrap{background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius);padding:10px}
+.flist-item{display:flex;gap:6px;margin-bottom:6px;align-items:center}
+.flist-item input{flex:1;padding:5px 8px;font-size:11px}
+.flist-item .rem{background:rgba(239,68,68,.12);color:var(--red2);border:none;border-radius:4px;padding:3px 7px;font-size:11px;cursor:pointer;flex-shrink:0}
+.fadd-row{font-size:11px;color:var(--accent3);cursor:pointer;display:inline-flex;align-items:center;gap:4px;margin-top:4px;font-weight:600}
+.fadd-row:hover{color:var(--accent2)}
+.score-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.score-field{background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius);padding:8px}
+.score-field label{font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:.4px;font-weight:700;margin-bottom:5px;display:block}
+.score-field .srow{display:flex;gap:6px}
+.score-field input{flex:1;padding:5px 8px;font-size:12px}
+.score-field select{padding:5px 8px;font-size:12px}
+
+/* ── BUTTONS ── */
+.btn{padding:7px 16px;border-radius:var(--radius);border:none;font-size:12px;font-weight:600;cursor:pointer;transition:.15s;display:inline-flex;align-items:center;gap:5px}
+.btn-primary{background:var(--accent);color:#fff}.btn-primary:hover{background:var(--accent2)}
+.btn-danger{background:var(--red);color:#fff}.btn-danger:hover{background:var(--red2)}
+.btn-ghost{background:var(--bg3);color:var(--text2);border:1px solid var(--border)}.btn-ghost:hover{border-color:var(--border2)}
+.btn-teal{background:var(--teal);color:#fff}.btn-teal:hover{background:var(--teal2)}
+.add-btn{display:inline-flex;align-items:center;gap:6px;padding:6px 14px;background:rgba(99,102,241,.12);color:var(--accent3);border:1px solid rgba(99,102,241,.4);border-radius:var(--radius);font-size:11px;font-weight:600;cursor:pointer;transition:.15s;margin-right:8px;margin-bottom:18px}
+.add-btn:hover{background:rgba(99,102,241,.22)}
+.icon-btn{background:none;border:1px solid var(--border);border-radius:var(--radius);padding:3px 8px;color:var(--text3);font-size:11px;cursor:pointer;transition:.15s}
+.icon-btn:hover{border-color:var(--red2);color:var(--red2)}
+.icon-btn.edit:hover{border-color:var(--accent);color:var(--accent3)}
+
+/* ── TOAST ── */
+#toast{position:fixed;bottom:24px;right:24px;background:var(--bg3);border:1px solid var(--green);color:var(--green2);padding:10px 18px;border-radius:var(--radius2);font-size:12px;font-weight:600;z-index:999;transform:translateY(20px);opacity:0;transition:.3s;pointer-events:none}
+#toast.show{transform:none;opacity:1}
+
+/* ── EMPTY ── */
+.empty{text-align:center;padding:40px;color:var(--text3);font-size:13px}
+.empty .ei{font-size:36px;margin-bottom:10px}
+
+/* ── EXPORT PANEL ── */
+#export-panel pre{background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius);padding:12px;font-family:monospace;font-size:11px;color:var(--teal3);max-height:300px;overflow:auto;line-height:1.5}
+
+/* ── BADGE PILL ── */
+.badge-pill{display:inline-block;font-size:9px;font-weight:700;padding:1px 7px;border-radius:99px}
+.bp-g{background:rgba(16,185,129,.15);color:var(--green2)}
+.bp-a{background:rgba(245,158,11,.15);color:var(--amber2)}
+.bp-r{background:rgba(239,68,68,.15);color:var(--red2)}
+.bwin{color:var(--green2);font-weight:700}.bneu{color:var(--text2)}.blos{color:var(--red2);opacity:.7}
+
+/* ── BIG COMPARE ── */
+.big-compare{overflow-x:auto;border:1px solid var(--border);border-radius:var(--radius2);margin-top:20px}
+table.bc{width:100%;border-collapse:collapse;min-width:600px}
+.bc th{background:var(--bg3);padding:9px 11px;font-size:11px;font-weight:700;color:var(--text2);border-bottom:1px solid var(--border);white-space:nowrap;text-align:center}
+.bc th:first-child{text-align:left;min-width:160px}
 .bc th.ours{color:var(--accent3);background:rgba(99,102,241,.08)}
-.bc td{padding:8px 12px;border-bottom:1px solid var(--border);font-size:11px;text-align:center;vertical-align:middle}
+.bc td{padding:8px 11px;border-bottom:1px solid var(--border);font-size:11px;text-align:center;vertical-align:middle}
 .bc td:first-child{text-align:left;color:var(--text);font-weight:500}
 .bc td.ours{background:rgba(99,102,241,.04)}
 .bc td.cat{background:var(--bg4);color:var(--text3);font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px}
 .bc tr:last-child td{border-bottom:none}
 .bc tr:hover td:not(.cat){background:rgba(255,255,255,.02)}
-.bwin{color:var(--green2);font-weight:700}.bneu{color:var(--text2)}.blos{color:var(--red2);opacity:.7}
-.badge-pill{display:inline-block;font-size:9px;font-weight:700;padding:1px 7px;border-radius:99px}
-.bp-g{background:rgba(16,185,129,.15);color:var(--green2)}
-.bp-a{background:rgba(245,158,11,.15);color:var(--amber2)}
-.bp-r{background:rgba(239,68,68,.15);color:var(--red2)}
 
-/* CHANGELOG */
-.cl-entry{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius2);margin-bottom:14px;overflow:hidden}
-.cl-head{display:flex;align-items:center;gap:12px;padding:12px 18px;cursor:pointer;user-select:none;transition:.15s}
-.cl-head:hover{background:var(--bg3)}
-.cl-ver{font-size:13px;font-weight:800;color:var(--accent2);min-width:100px}
-.cl-date{font-size:11px;color:var(--text3);flex:1}
-.cl-summary{font-size:11px;color:var(--text2);flex:2}
-.cl-arrow{color:var(--text3);font-size:12px;transition:.2s}
-.cl-entry.open .cl-arrow{transform:rotate(90deg)}
-.cl-body{display:none;padding:14px 18px;border-top:1px solid var(--border);background:var(--bg)}
-.cl-entry.open .cl-body{display:block}
-.cl-group{margin-bottom:12px}
-.cl-gtitle{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px}
-.cl-gtitle.added{color:var(--green2)}.cl-gtitle.changed{color:var(--amber2)}
-.cl-gtitle.arch{color:var(--accent2)}.cl-gtitle.integr{color:var(--teal2)}
-.cl-items{list-style:none;display:flex;flex-direction:column;gap:4px}
-.cl-items li{font-size:11px;color:var(--text2);display:flex;gap:6px;align-items:flex-start}
-.cl-items li::before{content:'→';color:var(--text3);flex-shrink:0}
+/* ── SEARCH HIGHLIGHT ── */
+.hl{background:rgba(245,158,11,.25);border-radius:2px;padding:0 1px}
 
-/* EDIT PANEL */
-#edit-panel{position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:200;display:none;align-items:center;justify-content:center}
-#edit-panel.open{display:flex}
-.edit-box{background:var(--bg2);border:1px solid var(--border2);border-radius:var(--radius3);width:min(700px,95vw);max-height:90vh;display:flex;flex-direction:column}
-.edit-head{padding:16px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
-.edit-head h3{font-size:14px;font-weight:700;color:var(--text)}
-.edit-close{background:none;border:none;color:var(--text3);font-size:20px;cursor:pointer;line-height:1}
-.edit-close:hover{color:var(--text)}
-.edit-body{flex:1;overflow-y:auto;padding:20px}
-.edit-body p{font-size:12px;color:var(--text2);line-height:1.8;margin-bottom:16px}
-.edit-body code{background:var(--bg3);border:1px solid var(--border);border-radius:4px;padding:1px 5px;font-family:monospace;font-size:11px;color:var(--accent3)}
-.edit-body pre{background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius);padding:14px;font-family:monospace;font-size:11px;color:var(--teal3);overflow-x:auto;line-height:1.6;margin-bottom:16px}
-.edit-body h4{font-size:12px;font-weight:700;color:var(--text2);margin-bottom:8px;text-transform:uppercase;letter-spacing:.5px}
-.edit-footer{padding:14px 20px;border-top:1px solid var(--border);display:flex;gap:8px;justify-content:flex-end}
-.btn{padding:7px 16px;border-radius:var(--radius);border:none;font-size:12px;font-weight:600;cursor:pointer;transition:.15s}
-.btn-primary{background:var(--accent);color:#fff}.btn-primary:hover{background:var(--accent2)}
-.btn-ghost{background:var(--bg3);color:var(--text2);border:1px solid var(--border)}.btn-ghost:hover{border-color:var(--border2)}
-.add-btn{display:inline-flex;align-items:center;gap:6px;padding:6px 14px;background:rgba(99,102,241,.15);color:var(--accent3);border:1px solid var(--accent);border-radius:var(--radius);font-size:11px;font-weight:600;cursor:pointer;transition:.15s;margin-bottom:20px}
-.add-btn:hover{background:rgba(99,102,241,.25)}
+/* ── NO RESULT ── */
+.no-result{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius2);padding:32px;text-align:center;color:var(--text3);font-size:12px}
 
 @keyframes pulse{0%,100%{opacity:.5}50%{opacity:1}}
-@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
 </style>
 </head>
 <body>
 <div id="shell">
 
+<!-- ══ HEADER ══ -->
 <header id="header">
   <div class="logo"><span class="dot"></span> ReservaOS · Version Tracker</div>
   <div class="subtitle">Control automático de versiones y comparativa de mercado</div>
-  <div class="hbadge" id="hbadge">Cargando...</div>
+  <div class="hright">
+    <div class="search-wrap">
+      <span class="si">🔍</span>
+      <input id="search-input" type="text" placeholder="Buscar versión, feature..." oninput="onSearch(this.value)"/>
+    </div>
+    <button class="hbtn" onclick="openExport()">⬇ Exportar</button>
+    <button class="hbtn" onclick="openImport()">⬆ Importar</button>
+    <button class="hbtn" onclick="resetData()" title="Restablecer datos originales">↺ Reset</button>
+    <span class="hbadge" id="hbadge">Cargando...</span>
+  </div>
 </header>
 
+<!-- ══ TABS ══ -->
 <nav id="tabs">
   <div class="tab active" onclick="showTab('timeline',this)">📅 Historial</div>
   <div class="tab" onclick="showTab('matrix',this)">📊 Matriz</div>
   <div class="tab" onclick="showTab('market',this)">🏪 Mercado</div>
   <div class="tab" onclick="showTab('changelog',this)">📝 Changelog</div>
-  <div class="tab" onclick="showTab('guide',this)">➕ Cómo agregar</div>
 </nav>
 
 <main id="content">
@@ -190,760 +263,814 @@ table.bc{width:100%;border-collapse:collapse;min-width:700px}
   <section id="tab-matrix" class="section"></section>
   <section id="tab-market" class="section"></section>
   <section id="tab-changelog" class="section"></section>
-  <section id="tab-guide" class="section"></section>
 </main>
 </div>
 
-<!-- EDIT PANEL (instrucciones) -->
-<div id="edit-panel">
-  <div class="edit-box">
-    <div class="edit-head">
-      <h3 id="ep-title">Cómo agregar</h3>
-      <button class="edit-close" onclick="closePanel()">✕</button>
+<!-- ══ MODAL: NUEVA VERSIÓN ══ -->
+<div class="modal-overlay" id="modal-version">
+<div class="modal">
+  <div class="modal-head">
+    <h3 id="mv-title">Nueva versión</h3>
+    <button class="modal-close" onclick="closeModal('modal-version')">✕</button>
+  </div>
+  <div class="modal-body">
+    <div class="fgrid">
+      <div class="frow"><label>Label (ej. v4)</label><input id="mv-label" placeholder="v4"/></div>
+      <div class="frow"><label>Ícono emoji</label><input id="mv-icon" placeholder="🚀"/></div>
     </div>
-    <div class="edit-body" id="ep-body"></div>
-    <div class="edit-footer">
-      <button class="btn btn-ghost" onclick="closePanel()">Cerrar</button>
+    <div class="frow"><label>Nombre completo</label><input id="mv-name" placeholder="ReservaOS v4 — App Móvil"/></div>
+    <div class="fgrid">
+      <div class="frow"><label>Fecha</label><input id="mv-date" placeholder="20 Jun 2026"/></div>
+      <div class="frow"><label>Color del punto (hex)</label><input id="mv-color" type="color" value="#6366f1" style="height:34px;padding:2px 4px"/></div>
     </div>
+    <div class="frow"><label>Carpeta / archivo fuente</label><input id="mv-folder" placeholder="reservaos-v4/"/></div>
+    <div class="frow"><label>Descripción</label><textarea id="mv-desc" placeholder="Descripción de esta versión..."></textarea></div>
+    <div class="frow"><label>Metadatos (tamaño, archivos, stack)</label><input id="mv-meta" placeholder="~200 KB · 20 archivos · Node 20"/></div>
+
+    <div class="fdivider"></div>
+    <div class="fsection">Tags (tipo: stack / feature / deploy / new)</div>
+    <div class="flist-wrap" id="mv-tags-list"></div>
+    <span class="fadd-row" onclick="addTagRow()">+ Agregar tag</span>
+
+    <div class="fdivider"></div>
+    <div class="fsection">Funcionalidades clave</div>
+    <div class="flist-wrap" id="mv-feats-list"></div>
+    <span class="fadd-row" onclick="addFeatRow()">+ Agregar funcionalidad</span>
+  </div>
+  <div class="modal-foot">
+    <button class="btn btn-ghost" onclick="closeModal('modal-version')">Cancelar</button>
+    <button class="btn btn-primary" onclick="saveVersion()">💾 Guardar versión</button>
   </div>
 </div>
+</div>
+
+<!-- ══ MODAL: NUEVO COMPETIDOR ══ -->
+<div class="modal-overlay" id="modal-competitor">
+<div class="modal">
+  <div class="modal-head">
+    <h3 id="mc-title">Nuevo competidor</h3>
+    <button class="modal-close" onclick="closeModal('modal-competitor')">✕</button>
+  </div>
+  <div class="modal-body">
+    <div class="fgrid">
+      <div class="frow"><label>Nombre</label><input id="mc-name" placeholder="Sirvoy"/></div>
+      <div class="frow"><label>Origen / región</label><input id="mc-origin" placeholder="🇲🇽 México · Regional"/></div>
+    </div>
+    <div class="fgrid">
+      <div class="frow"><label>Precio principal</label><input id="mc-price" placeholder="$500 MXN/mes"/></div>
+      <div class="frow"><label>Nota de precio</label><input id="mc-pnote" placeholder="sin comisión por reserva"/></div>
+    </div>
+    <div class="frow"><label>Descripción</label><textarea id="mc-desc" placeholder="Descripción breve..."></textarea></div>
+
+    <div class="fdivider"></div>
+    <div class="fsection">Ventajas</div>
+    <div class="flist-wrap" id="mc-pros-list"></div>
+    <span class="fadd-row" onclick="addProRow()">+ Agregar ventaja</span>
+
+    <div class="fdivider"></div>
+    <div class="fsection">Limitaciones</div>
+    <div class="flist-wrap" id="mc-cons-list"></div>
+    <span class="fadd-row" onclick="addConRow()">+ Agregar limitación</span>
+
+    <div class="fdivider"></div>
+    <div class="fsection">Calificaciones</div>
+    <div class="score-grid">
+      <div class="score-field"><label>Precio</label><div class="srow"><input id="sc-precio" placeholder="A+"/><select id="sc-precio-cls"><option value="hi">Verde</option><option value="mid">Amarillo</option><option value="lo">Rojo</option></select></div></div>
+      <div class="score-field"><label>Localización</label><div class="srow"><input id="sc-local" placeholder="B"/><select id="sc-local-cls"><option value="hi">Verde</option><option value="mid" selected>Amarillo</option><option value="lo">Rojo</option></select></div></div>
+      <div class="score-field"><label>Features</label><div class="srow"><input id="sc-feat" placeholder="B+"/><select id="sc-feat-cls"><option value="hi">Verde</option><option value="mid" selected>Amarillo</option><option value="lo">Rojo</option></select></div></div>
+      <div class="score-field"><label>Soporte</label><div class="srow"><input id="sc-sup" placeholder="B"/><select id="sc-sup-cls"><option value="hi">Verde</option><option value="mid" selected>Amarillo</option><option value="lo">Rojo</option></select></div></div>
+    </div>
+  </div>
+  <div class="modal-foot">
+    <button class="btn btn-ghost" onclick="closeModal('modal-competitor')">Cancelar</button>
+    <button class="btn btn-primary" onclick="saveCompetitor()">💾 Guardar competidor</button>
+  </div>
+</div>
+</div>
+
+<!-- ══ MODAL: NUEVO CHANGELOG ══ -->
+<div class="modal-overlay" id="modal-changelog">
+<div class="modal">
+  <div class="modal-head">
+    <h3>Nueva entrada de changelog</h3>
+    <button class="modal-close" onclick="closeModal('modal-changelog')">✕</button>
+  </div>
+  <div class="modal-body">
+    <div class="fgrid">
+      <div class="frow"><label>Desde versión</label><input id="cl-from" placeholder="v3"/></div>
+      <div class="frow"><label>Hasta versión</label><input id="cl-to" placeholder="v4"/></div>
+    </div>
+    <div class="frow"><label>Fecha</label><input id="cl-date" placeholder="20 Jun 2026"/></div>
+    <div class="frow"><label>Resumen (1 línea)</label><input id="cl-summary" placeholder="Descripción breve del cambio..."/></div>
+    <div class="fdivider"></div>
+    <div class="fsection">Items agregados</div>
+    <div class="flist-wrap" id="cl-added-list"></div>
+    <span class="fadd-row" onclick="addClItem('added')">+ Agregar item</span>
+    <div class="fdivider"></div>
+    <div class="fsection">Cambios / modificaciones</div>
+    <div class="flist-wrap" id="cl-changed-list"></div>
+    <span class="fadd-row" onclick="addClItem('changed')">+ Agregar item</span>
+    <div class="fdivider"></div>
+    <div class="fsection">Cambios arquitectónicos</div>
+    <div class="flist-wrap" id="cl-arch-list"></div>
+    <span class="fadd-row" onclick="addClItem('arch')">+ Agregar item</span>
+    <div class="fdivider"></div>
+    <div class="fsection">Integraciones nuevas</div>
+    <div class="flist-wrap" id="cl-integr-list"></div>
+    <span class="fadd-row" onclick="addClItem('integr')">+ Agregar item</span>
+  </div>
+  <div class="modal-foot">
+    <button class="btn btn-ghost" onclick="closeModal('modal-changelog')">Cancelar</button>
+    <button class="btn btn-primary" onclick="saveChangelog()">💾 Guardar changelog</button>
+  </div>
+</div>
+</div>
+
+<!-- ══ MODAL: EXPORT / IMPORT ══ -->
+<div class="modal-overlay" id="modal-export">
+<div class="modal" style="width:min(700px,100%)">
+  <div class="modal-head">
+    <h3 id="exp-title">Exportar datos</h3>
+    <button class="modal-close" onclick="closeModal('modal-export')">✕</button>
+  </div>
+  <div class="modal-body" id="export-panel"></div>
+  <div class="modal-foot" id="export-foot"></div>
+</div>
+</div>
+
+<!-- ══ TOAST ══ -->
+<div id="toast"></div>
 
 <script>
-/* ══════════════════════════════════════════════════════════════════
-   ▶▶  DATOS — Edita solo estas secciones para agregar contenido  ◀◀
-══════════════════════════════════════════════════════════════════ */
-
-// ─────────────────────────────────────────────
-// VERSIONES — Agrega un objeto por cada versión
-// ─────────────────────────────────────────────
-const VERSIONS = [
-  {
-    id: "myob-saas",
-    label: "v0",
-    dotColor: "#6366f1",
-    icon: "🧪",
-    name: "MYOB SaaS App — Prototipo de Plataforma",
-    badge: { text: "ORIGEN", type: "new" },
-    date: "15 Jun 2026",
-    folder: "myob-saas/",
-    tags: [
-      { text: "Node.js", type: "stack" }, { text: "React + Vite", type: "stack" },
-      { text: "SQLite", type: "stack" }, { text: "Tailwind CSS", type: "stack" },
-      { text: "Full-stack", type: "deploy" }, { text: "Build incluido", type: "deploy" }
-    ],
-    desc: "Prototipo SaaS tipo hoja de cálculo colaborativa (Google Sheets interno) para la capa de inteligencia de datos MYOB. Arquitectura full-stack con backend REST en Express y frontend React compilado.",
-    features: [
-      { icon: "🔐", title: "Auth JWT", desc: "login/registro seguro" },
-      { icon: "📋", title: "Workbooks", desc: "múltiples libros por usuario" },
-      { icon: "📄", title: "Sheets", desc: "hojas dentro de workbooks" },
-      { icon: "🔢", title: "Fórmulas", desc: "motor de cálculo propio" },
-      { icon: "📊", title: "DiagramView", desc: "visualización de datos" },
-      { icon: "🎨", title: "Toolbar + Sidebar", desc: "UI completa" },
-      { icon: "⚡", title: "Vite HMR", desc: "desarrollo rápido" },
-      { icon: "💾", title: "SQLite WAL", desc: "persistencia robusta" }
-    ],
-    meta: "~761 KB · 45 archivos · Stack: Express 4 + React 18 + better-sqlite3"
-  },
-  {
-    id: "chimulco-v2",
-    label: "v2",
-    dotColor: "#0d9488",
-    icon: "🏊",
-    name: "ReservaOS Chimulco v2 — Primera versión cliente",
-    date: "16 Jun 2026",
-    folder: "ReservaOS_Chimulco_v2.zip",
-    tags: [
-      { text: "HTML5 puro", type: "stack" }, { text: "Vanilla JS", type: "stack" },
-      { text: "localStorage", type: "feature" }, { text: "Sin servidor", type: "deploy" },
-      { text: "Offline-first", type: "deploy" }
-    ],
-    desc: "Primera implementación específica para Chimulco Parque Acuático (Villa Corona, Jalisco). Archivo HTML único autocontenido con datos guardados en localStorage. Sin dependencias — funciona con doble clic.",
-    features: [
-      { icon: "🏕️", title: "Bungalows", desc: "Zona A (5 unidades)" },
-      { icon: "🏡", title: "Casas VIP", desc: "Suite + Ale (2 unidades)" },
-      { icon: "🚐", title: "Campers", desc: "Chabela + Lola" },
-      { icon: "🛖", title: "Cabinas", desc: "10 unidades" },
-      { icon: "🏊", title: "Albercas", desc: "5 piscinas" },
-      { icon: "📅", title: "Calendario", desc: "vista de reservas" },
-      { icon: "🔐", title: "Panel Admin", desc: "Ctrl+Shift+A" },
-      { icon: "💾", title: "Export", desc: "CSV/JSON desde admin" }
-    ],
-    meta: "~98 KB · 4 archivos · admin / chimulco2026 · 24 servicios"
-  },
-  {
-    id: "v3-mejorado",
-    label: "v3",
-    dotColor: "#14b8a6",
-    icon: "✨",
-    name: "ReservaOS v3 Mejorado",
-    badge: { text: "+23 KB vs v2", type: "up" },
-    date: "17 Jun 2026",
-    folder: "ReservaOS_v3_Mejorado.zip",
-    tags: [
-      { text: "HTML5 puro", type: "stack" }, { text: "Vanilla JS", type: "stack" },
-      { text: "localStorage", type: "feature" }, { text: "UI mejorada", type: "feature" },
-      { text: "Sin servidor", type: "deploy" }, { text: "Genérico", type: "new" }
-    ],
-    desc: "Versión mejorada y generalizada. El título cambia de 'Chimulco' a 'ReservaOS' genérico para reutilización en otros clientes. +23 KB de nuevas funcionalidades de UI, validaciones y experiencia mejorada.",
-    features: [
-      { icon: "🎨", title: "UI renovada", desc: "diseño mejorado" },
-      { icon: "📱", title: "Responsive", desc: "mobile-first" },
-      { icon: "✅", title: "Validaciones", desc: "formularios robustos" },
-      { icon: "🔔", title: "Notificaciones", desc: "feedback visual" },
-      { icon: "📋", title: "Todo v2", desc: "backward compatible" },
-      { icon: "🌐", title: "Multi-hosting", desc: "iframe + static" },
-      { icon: "🐍", title: "Python server", desc: "red interna" },
-      { icon: "🏷️", title: "White-label", desc: "marca genérica" }
-    ],
-    meta: "~121 KB · 4 archivos · Compatible con v2 · Listo para Paquete Comercial"
-  },
-  {
-    id: "pro-myob",
-    label: "PRO",
-    dotColor: "#d97706",
-    icon: "🚀",
-    name: "ReservaOS Pro MYOB — Backend Producción",
-    badge: { text: "ENTERPRISE", type: "up" },
-    date: "17 Jun 2026",
-    folder: "reservaos-pro/",
-    tags: [
-      { text: "Node.js 18+", type: "stack" }, { text: "Express", type: "stack" },
-      { text: "SQLite", type: "stack" }, { text: "MercadoPago", type: "feature" },
-      { text: "WhatsApp API", type: "feature" }, { text: "SMTP Email", type: "feature" },
-      { text: "AWS S3", type: "feature" }, { text: "Railway", type: "deploy" },
-      { text: "Docker", type: "deploy" }
-    ],
-    desc: "Sistema de producción completo con API REST, autenticación JWT robusta, integraciones externas, base de datos con schema completo, tests automatizados y configuración cloud. Target: reservas.chimulco.mx",
-    features: [
-      { icon: "🔐", title: "Auth JWT", desc: "access + refresh tokens" },
-      { icon: "👥", title: "Clientes", desc: "CRUD completo" },
-      { icon: "📅", title: "Reservas", desc: "CRUD + estados" },
-      { icon: "🛎️", title: "Servicios", desc: "catálogo dinámico" },
-      { icon: "📊", title: "Dashboard", desc: "métricas tiempo real" },
-      { icon: "💳", title: "MercadoPago", desc: "cobros online" },
-      { icon: "📱", title: "WhatsApp Business", desc: "notificaciones" },
-      { icon: "📧", title: "Email SMTP", desc: "confirmaciones" },
-      { icon: "🖼️", title: "Uploads", desc: "S3/R2 cloud storage" },
-      { icon: "📮", title: "QR codes", desc: "por reserva" },
-      { icon: "🧪", title: "Tests", desc: "suite automatizada" },
-      { icon: "🐳", title: "Docker", desc: "containerizado" },
-      { icon: "⚡", title: "Rate limiting", desc: "protección API" },
-      { icon: "🔢", title: "Folios", desc: "numeración automática" }
-    ],
-    meta: "~415 KB · 40 archivos · 8 rutas API · Node 18+"
-  },
-  {
-    id: "paquete-comercial",
-    label: "💼",
-    dotColor: "#059669",
-    icon: "📦",
-    name: "Paquete Comercial ReservaOS v1.0",
-    badge: { text: "PRODUCTO", type: "new" },
-    date: "16 Jun 2026",
-    folder: "Paquete_Comercial_ReservaOS_v1.0.zip",
-    tags: [
-      { text: "Propuesta comercial", type: "feature" }, { text: "Contratos", type: "feature" },
-      { text: "Manuales PDF", type: "feature" }, { text: "Listo para vender", type: "deploy" },
-      { text: "White-label", type: "new" }
-    ],
-    desc: "Kit completo de comercialización con el sistema (v3 HTML), toda la documentación técnica, materiales de venta, contratos editables y plan de capacitación. Tres tiers de precio.",
-    features: [
-      { icon: "📄", title: "Propuesta Comercial", desc: "PDF + DOCX" },
-      { icon: "🔖", title: "Ficha Técnica", desc: "especificaciones" },
-      { icon: "📜", title: "Contrato", desc: "implementación editable" },
-      { icon: "📚", title: "Manual Admin", desc: "PDF + DOCX" },
-      { icon: "📖", title: "Guía Cliente", desc: "usuario final" },
-      { icon: "🎓", title: "Plan Capacitación", desc: "programa completo" },
-      { icon: "🥉", title: "Básico", desc: "$9,500 + $1,500/mes" },
-      { icon: "🥈", title: "Profesional", desc: "$19,500 + $2,500/mes" },
-      { icon: "🥇", title: "Enterprise", desc: "$35,000 + $4,500/mes" }
-    ],
-    meta: "~1.46 MB · 26 archivos · 6 carpetas · Jun 2026"
-  }
-  // ── NUEVA VERSIÓN: copia un objeto de arriba y pégalo aquí ──
-];
-
-// ─────────────────────────────────────────────────────────────────
-// MATRIZ DE FEATURES — Agrega filas o columnas aquí
-// Cada versión en "cols" debe tener el mismo id que en VERSIONS
-// Para cada feature: "y"=sí / "n"=no / "p"=parcial o texto custom
-// ─────────────────────────────────────────────────────────────────
-const MATRIX = {
-  cols: ["myob-saas","chimulco-v2","v3-mejorado","pro-myob","paquete-comercial"],
-  categories: [
+/* ══════════════════════════════════════════════════════════════════════
+   DATOS BASE — se cargan desde localStorage si existen, si no desde aquí
+══════════════════════════════════════════════════════════════════════ */
+const BASE_DATA = {
+  versions: [
     {
-      name: "🔐 Autenticación",
-      rows: [
-        { name: "Login / Registro",       vals: ["y","p","p","y","p"] },
-        { name: "JWT access + refresh",   vals: ["y","n","n","y","n"] },
-        { name: "Panel admin oculto",     vals: ["n","y","y","y","y"] },
-        { name: "Rate limiting API",      vals: ["n","n","n","y","n"] }
-      ]
+      id:"myob-saas",label:"v0",dotColor:"#6366f1",icon:"🧪",
+      name:"MYOB SaaS App — Prototipo de Plataforma",
+      badge:{text:"ORIGEN",type:"new"},date:"15 Jun 2026",folder:"myob-saas/",
+      tags:[{text:"Node.js",type:"stack"},{text:"React + Vite",type:"stack"},{text:"SQLite",type:"stack"},{text:"Full-stack",type:"deploy"}],
+      desc:"Prototipo SaaS tipo hoja de cálculo colaborativa (Google Sheets interno) para la capa de inteligencia de datos MYOB. Arquitectura full-stack con backend REST en Express y frontend React compilado.",
+      features:[
+        {icon:"🔐",title:"Auth JWT",desc:"login/registro seguro"},
+        {icon:"📋",title:"Workbooks",desc:"múltiples libros por usuario"},
+        {icon:"📄",title:"Sheets",desc:"hojas dentro de workbooks"},
+        {icon:"🔢",title:"Fórmulas",desc:"motor de cálculo propio"},
+        {icon:"📊",title:"DiagramView",desc:"visualización de datos"},
+        {icon:"💾",title:"SQLite WAL",desc:"persistencia robusta"}
+      ],
+      meta:"~761 KB · 45 archivos · Express 4 + React 18"
     },
     {
-      name: "📅 Gestión de Reservas",
-      rows: [
-        { name: "Crear / editar reservas",      vals: ["n","y","y","y","y"] },
-        { name: "Vista calendario",             vals: ["n","y","y","y","y"] },
-        { name: "Estados de reserva",          vals: ["n","p","p","y","p"] },
-        { name: "Gestión de clientes",         vals: ["n","p","p","y","p"] },
-        { name: "Catálogo servicios dinámico", vals: ["n","Fijo","Fijo","y","Fijo"] },
-        { name: "Folio / numeración auto",     vals: ["n","n","n","y","n"] },
-        { name: "Multi-usuario simultáneo",    vals: ["y","n","n","y","n"] }
-      ]
+      id:"chimulco-v2",label:"v2",dotColor:"#0d9488",icon:"🏊",
+      name:"ReservaOS Chimulco v2 — Primera versión cliente",
+      date:"16 Jun 2026",folder:"ReservaOS_Chimulco_v2.zip",
+      tags:[{text:"HTML5 puro",type:"stack"},{text:"Vanilla JS",type:"stack"},{text:"localStorage",type:"feature"},{text:"Sin servidor",type:"deploy"},{text:"Offline-first",type:"deploy"}],
+      desc:"Primera implementación específica para Chimulco Parque Acuático (Villa Corona, Jalisco). Archivo HTML único autocontenido con datos en localStorage. Sin dependencias — funciona con doble clic.",
+      features:[
+        {icon:"🏕️",title:"Bungalows",desc:"Zona A (5 unidades)"},
+        {icon:"🏡",title:"Casas VIP",desc:"Suite + Ale (2 unidades)"},
+        {icon:"🚐",title:"Campers",desc:"Chabela + Lola"},
+        {icon:"🛖",title:"Cabinas",desc:"10 unidades"},
+        {icon:"🏊",title:"Albercas",desc:"5 piscinas"},
+        {icon:"📅",title:"Calendario",desc:"vista de reservas"},
+        {icon:"🔐",title:"Panel Admin",desc:"Ctrl+Shift+A"},
+        {icon:"💾",title:"Export",desc:"CSV/JSON"}
+      ],
+      meta:"~98 KB · 4 archivos · admin / chimulco2026 · 24 servicios"
     },
     {
-      name: "💳 Pagos e Integraciones",
-      rows: [
-        { name: "MercadoPago",          vals: ["n","n","n","y","n"] },
-        { name: "WhatsApp Business",    vals: ["n","n","n","y","n"] },
-        { name: "Email / SMTP",         vals: ["n","n","n","y","n"] },
-        { name: "QR por reserva",       vals: ["n","n","n","y","n"] },
-        { name: "Cloud storage S3/R2",  vals: ["n","n","n","y","n"] }
-      ]
+      id:"v3-mejorado",label:"v3",dotColor:"#14b8a6",icon:"✨",
+      name:"ReservaOS v3 Mejorado",
+      badge:{text:"+23 KB vs v2",type:"up"},date:"17 Jun 2026",folder:"ReservaOS_v3_Mejorado.zip",
+      tags:[{text:"HTML5 puro",type:"stack"},{text:"Vanilla JS",type:"stack"},{text:"localStorage",type:"feature"},{text:"UI mejorada",type:"feature"},{text:"White-label",type:"new"}],
+      desc:"Versión mejorada y generalizada. Título de 'Chimulco' a 'ReservaOS' genérico para reutilización en otros clientes. +23 KB de nuevas funcionalidades de UI, validaciones y experiencia de usuario.",
+      features:[
+        {icon:"🎨",title:"UI renovada",desc:"diseño mejorado"},
+        {icon:"📱",title:"Responsive",desc:"mobile-first"},
+        {icon:"✅",title:"Validaciones",desc:"formularios robustos"},
+        {icon:"🔔",title:"Notificaciones",desc:"feedback visual"},
+        {icon:"🌐",title:"Multi-hosting",desc:"iframe + static"},
+        {icon:"🏷️",title:"White-label",desc:"marca genérica"}
+      ],
+      meta:"~121 KB · 4 archivos · Compatible con v2"
     },
     {
-      name: "🚀 Despliegue",
-      rows: [
-        { name: "Sin servidor (offline)", vals: ["n","y","y","n","y"] },
-        { name: "Railway / Render",       vals: ["n","n","n","y","n"] },
-        { name: "Docker",                 vals: ["n","n","n","y","n"] },
-        { name: "Hosting estático",       vals: ["n","y","y","n","y"] }
-      ]
+      id:"pro-myob",label:"PRO",dotColor:"#d97706",icon:"🚀",
+      name:"ReservaOS Pro MYOB — Backend Producción",
+      badge:{text:"ENTERPRISE",type:"up"},date:"17 Jun 2026",folder:"reservaos-pro/",
+      tags:[{text:"Node.js 18+",type:"stack"},{text:"Express",type:"stack"},{text:"SQLite",type:"stack"},{text:"MercadoPago",type:"feature"},{text:"WhatsApp API",type:"feature"},{text:"Docker",type:"deploy"},{text:"Railway",type:"deploy"}],
+      desc:"Sistema de producción completo con API REST, JWT robusto, integraciones externas, schema SQL completo, tests automatizados y configuración cloud. Target: reservas.chimulco.mx",
+      features:[
+        {icon:"🔐",title:"Auth JWT",desc:"access + refresh tokens"},
+        {icon:"👥",title:"Clientes",desc:"CRUD completo"},
+        {icon:"📅",title:"Reservas",desc:"CRUD + estados"},
+        {icon:"📊",title:"Dashboard",desc:"métricas tiempo real"},
+        {icon:"💳",title:"MercadoPago",desc:"cobros online"},
+        {icon:"📱",title:"WhatsApp",desc:"notificaciones automáticas"},
+        {icon:"📧",title:"Email SMTP",desc:"confirmaciones"},
+        {icon:"🐳",title:"Docker",desc:"containerizado"},
+        {icon:"⚡",title:"Rate limiting",desc:"protección API"},
+        {icon:"🧪",title:"Tests",desc:"suite automatizada"}
+      ],
+      meta:"~415 KB · 40 archivos · 8 rutas API · Node 18+"
     },
     {
-      name: "📦 Comercialización",
-      rows: [
-        { name: "Propuesta comercial PDF", vals: ["n","n","n","n","y"] },
-        { name: "Contrato editable",       vals: ["n","n","n","n","y"] },
-        { name: "Manual de usuario",       vals: ["n","n","n","README","PDF+DOCX"] },
-        { name: "Plan de capacitación",    vals: ["n","n","n","n","y"] },
-        { name: "White-label",             vals: ["n","n","y","y","y"] }
-      ]
+      id:"paquete-comercial",label:"💼",dotColor:"#059669",icon:"📦",
+      name:"Paquete Comercial ReservaOS v1.0",
+      badge:{text:"PRODUCTO",type:"new"},date:"16 Jun 2026",folder:"Paquete_Comercial_v1.0.zip",
+      tags:[{text:"Propuesta PDF",type:"feature"},{text:"Contratos",type:"feature"},{text:"Manuales",type:"feature"},{text:"White-label",type:"new"},{text:"Listo para vender",type:"deploy"}],
+      desc:"Kit completo de comercialización con el sistema (v3 HTML), documentación técnica, materiales de venta, contratos editables y plan de capacitación. Tres tiers de precio.",
+      features:[
+        {icon:"📄",title:"Propuesta Comercial",desc:"PDF + DOCX"},
+        {icon:"📜",title:"Contrato",desc:"implementación editable"},
+        {icon:"📚",title:"Manual Admin",desc:"PDF + DOCX"},
+        {icon:"🎓",title:"Plan Capacitación",desc:"programa completo"},
+        {icon:"🥉",title:"Básico",desc:"$9,500 + $1,500/mes"},
+        {icon:"🥈",title:"Profesional",desc:"$19,500 + $2,500/mes"},
+        {icon:"🥇",title:"Enterprise",desc:"$35,000 + $4,500/mes"}
+      ],
+      meta:"~1.46 MB · 26 archivos · 6 carpetas"
     }
+  ],
+
+  matrix: {
+    cols:["myob-saas","chimulco-v2","v3-mejorado","pro-myob","paquete-comercial"],
+    categories:[
+      {name:"🔐 Autenticación",rows:[
+        {name:"Login / Registro",vals:["y","p","p","y","p"]},
+        {name:"JWT access + refresh",vals:["y","n","n","y","n"]},
+        {name:"Panel admin oculto",vals:["n","y","y","y","y"]},
+        {name:"Rate limiting API",vals:["n","n","n","y","n"]}
+      ]},
+      {name:"📅 Reservas",rows:[
+        {name:"Crear / editar reservas",vals:["n","y","y","y","y"]},
+        {name:"Vista calendario",vals:["n","y","y","y","y"]},
+        {name:"Estados de reserva",vals:["n","p","p","y","p"]},
+        {name:"Gestión de clientes",vals:["n","p","p","y","p"]},
+        {name:"Catálogo servicios dinámico",vals:["n","Fijo","Fijo","y","Fijo"]},
+        {name:"Multi-usuario simultáneo",vals:["y","n","n","y","n"]}
+      ]},
+      {name:"💳 Pagos e Integraciones",rows:[
+        {name:"MercadoPago",vals:["n","n","n","y","n"]},
+        {name:"WhatsApp Business",vals:["n","n","n","y","n"]},
+        {name:"Email / SMTP",vals:["n","n","n","y","n"]},
+        {name:"QR por reserva",vals:["n","n","n","y","n"]},
+        {name:"Cloud storage S3/R2",vals:["n","n","n","y","n"]}
+      ]},
+      {name:"🚀 Despliegue",rows:[
+        {name:"Sin servidor (offline)",vals:["n","y","y","n","y"]},
+        {name:"Railway / Render",vals:["n","n","n","y","n"]},
+        {name:"Docker",vals:["n","n","n","y","n"]},
+        {name:"Hosting estático",vals:["n","y","y","n","y"]}
+      ]},
+      {name:"📦 Comercialización",rows:[
+        {name:"Propuesta comercial PDF",vals:["n","n","n","n","y"]},
+        {name:"Contrato editable",vals:["n","n","n","n","y"]},
+        {name:"Manual de usuario",vals:["n","n","n","README","PDF+DOCX"]},
+        {name:"Plan de capacitación",vals:["n","n","n","n","y"]},
+        {name:"White-label",vals:["n","n","y","y","y"]}
+      ]}
+    ]
+  },
+
+  competitors:[
+    {id:"reservaos",name:"ReservaOS Pro",origin:"🇲🇽 Jalisco, México · Solución propia",price:"$9,500–$35,000 MXN",priceNote:"implementación + desde $1,500/mes",desc:"Sistema 100% a medida para balnearios mexicanos. Pago único + mantenimiento mensual. Sin comisiones por reserva.",highlight:true,pros:["100% personalizable y en español","Sin comisión por reserva (pago fijo)","MercadoPago nativo + WhatsApp","Código propio, sin lock-in","Versión offline disponible","Precio accesible PyMEs mexicanas"],cons:["Sin app móvil nativa (aún)","Requiere implementación técnica","Base de usuarios pequeña"],scores:{precio:{val:"A+",cls:"hi"},localizacion:{val:"A",cls:"hi"},features:{val:"B+",cls:"mid"},soporte:{val:"A",cls:"hi"}}},
+    {id:"sirvoy",name:"Sirvoy",origin:"🇸🇪 Suecia · Internacional",price:"$9–$49 USD/mes",priceNote:"+ ~1% comisión",desc:"Popular en LATAM para hospedaje y cabañas. Precio bajo pero sin integraciones mexicanas.",highlight:false,pros:["Precio muy bajo","Channel manager incluido","App móvil","Soporte 24/7"],cons:["Sin MercadoPago","Sin WhatsApp","No adaptado a balnearios","Personalización limitada"],scores:{precio:{val:"A",cls:"hi"},localizacion:{val:"C",cls:"lo"},features:{val:"B",cls:"mid"},soporte:{val:"B",cls:"mid"}}},
+    {id:"reservamos",name:"Reservamos / HotelBeds",origin:"🇲🇽 México · Regional",price:"10–18% comisión",priceNote:"por reserva + setup",desc:"Distribución turística enfocada en hoteles. No apta para gestión operativa de balnearios pequeños.",highlight:false,pros:["Red de distribución amplia","Reconocimiento en México","Integración OTAs"],cons:["Comisión alta 10–18%","No apto para balnearios pequeños","Sin WhatsApp","Dependencia total del proveedor"],scores:{precio:{val:"D",cls:"lo"},localizacion:{val:"B",cls:"mid"},features:{val:"B-",cls:"mid"},soporte:{val:"B",cls:"mid"}}},
+    {id:"fareharbor",name:"FareHarbor",origin:"🇺🇸 EE.UU. · Booking.com",price:"Gratis*",priceNote:"+ 6% al cliente final",desc:"Líder en reservas para tours y actividades. Propiedad de Booking.com. No diseñado para balnearios con hospedaje.",highlight:false,pros:["Sin costo mensual","Muy robusto","Canales globales","App móvil"],cons:["6% comisión al cliente","Sin MercadoPago","Inglés principalmente","No apto para balnearios","Lock-in Booking.com"],scores:{precio:{val:"B",cls:"mid"},localizacion:{val:"D",cls:"lo"},features:{val:"A",cls:"hi"},soporte:{val:"B",cls:"mid"}}},
+    {id:"cloudbeds",name:"Cloudbeds",origin:"🇺🇸 EE.UU. · Enterprise",price:"$300–$800+ USD/mes",priceNote:"según propiedades",desc:"PMS completo para hoteles y resorts. El más potente pero sobredimensionado y caro para balnearios.",highlight:false,pros:["PMS completo + channel manager","Revenue management","Soporte 24/7 en español"],cons:["Precio muy alto","Sobredimensionado","Sin MercadoPago","Contrato anual"],scores:{precio:{val:"F",cls:"lo"},localizacion:{val:"B",cls:"mid"},features:{val:"A+",cls:"hi"},soporte:{val:"A",cls:"hi"}}},
+    {id:"mindbody",name:"Mindbody",origin:"🇺🇸 EE.UU. · Wellness",price:"$129–$499 USD/mes",priceNote:"suscripción mensual",desc:"Para centros de bienestar y wellness. Sin soporte para hospedaje ni balnearios al aire libre.",highlight:false,pros:["Ideal para clases y wellness","App móvil para clientes","Membresías"],cons:["Precio alto","Sin cabañas/hospedaje","Sin MercadoPago","No localizado MX","Sin WhatsApp"],scores:{precio:{val:"F",cls:"lo"},localizacion:{val:"D",cls:"lo"},features:{val:"B",cls:"mid"},soporte:{val:"B",cls:"mid"}}}
+  ],
+
+  changelog:[
+    {from:"v0",to:"v2",date:"Jun 15–16, 2026",summary:"Pivot de SaaS interno a producto cliente — primera entrega Chimulco",open:true,groups:[
+      {type:"added",title:"AGREGADO",items:["Sistema de reservas para 24 servicios","Vista de calendario de disponibilidad","Panel administrador protegido (Ctrl+Shift+A)","Persistencia via localStorage","Exportación CSV/JSON"]},
+      {type:"arch",title:"ARQUITECTURA",items:["De React+Node.js → HTML5 puro","De SQLite → localStorage","De 45 archivos → 4 archivos","De multi-usuario → cliente único Chimulco"]}
+    ]},
+    {from:"v2",to:"v3",date:"Jun 16–17, 2026",summary:"Mejoras de UI/UX + generalización white-label (+23 KB)",groups:[
+      {type:"added",title:"AGREGADO",items:["UI rediseñada con gradientes mejorados","Validaciones de formulario más robustas","Sistema de notificaciones en pantalla","Mejor soporte responsive mobile-first"]},
+      {type:"changed",title:"MODIFICADO",items:["Título: 'Chimulco' → 'ReservaOS' (white-label)","Tamaño: 98 KB → 121 KB (+23 KB)"]}
+    ]},
+    {from:"v3",to:"Pro",date:"Jun 17, 2026",summary:"Salto a backend de producción — Node.js + integraciones + cloud deploy",groups:[
+      {type:"arch",title:"ARQUITECTURA",items:["De HTML standalone → Node.js + Express API REST","De localStorage → SQLite con schema SQL y seeds","Arquitectura modular: routes/, middleware/, integrations/, db/","Multi-usuario real con JWT access + refresh tokens","Docker containerizado"]},
+      {type:"integr",title:"INTEGRACIONES",items:["MercadoPago — cobros online con webhook","WhatsApp Business Cloud API — notificaciones automáticas","Email SMTP — confirmaciones y recordatorios","AWS S3 / Cloudflare R2 — storage de imágenes","QR codes — generación automática por reserva"]}
+    ]},
+    {from:"v3",to:"Paquete",date:"Jun 16, 2026",summary:"Empaquetado comercial — documentación completa + modelos de precios",groups:[
+      {type:"added",title:"NUEVO",items:["Propuesta Comercial PDF + DOCX editable","Ficha Técnica con especificaciones","Contrato de Implementación editable","Manual del Administrador PDF + DOCX","Plan de Capacitación estructurado"]},
+      {type:"changed",title:"PRECIOS",items:["Básico: $9,500 MXN + $1,500/mes","Profesional: $19,500 MXN + $2,500/mes","Enterprise: $35,000 MXN + $4,500/mes"]}
+    ]}
   ]
 };
 
-// ─────────────────────────────────────────────────────────────────
-// COMPETIDORES — Agrega un objeto por alternativa de mercado
-// scores: { precio, localizacion, features, soporte }
-//   "hi"=verde / "mid"=amarillo / "lo"=rojo
-// ─────────────────────────────────────────────────────────────────
-const COMPETITORS = [
-  {
-    id: "reservaos",
-    name: "ReservaOS Pro",
-    origin: "🇲🇽 Jalisco, México · Solución propia",
-    price: "$9,500–$35,000 MXN",
-    priceNote: "implementación + desde $1,500/mes",
-    desc: "Sistema 100% a medida para balnearios y parques acuáticos mexicanos. Pago único + mantenimiento mensual. Sin comisiones por reserva.",
-    highlight: true,
-    pros: [
-      "100% personalizable y en español",
-      "Sin comisión por reserva (pago fijo)",
-      "MercadoPago nativo + WhatsApp",
-      "Código propio, sin lock-in de proveedor",
-      "Versión offline disponible",
-      "Precio accesible para PyMEs mexicanas",
-      "Soporte local y capacitación incluida"
-    ],
-    cons: [
-      "Sin app móvil nativa (aún)",
-      "Requiere implementación técnica",
-      "Base de usuarios pequeña (inicio)"
-    ],
-    scores: { precio: { val: "A+", cls: "hi" }, localizacion: { val: "A", cls: "hi" }, features: { val: "B+", cls: "mid" }, soporte: { val: "A", cls: "hi" } }
-  },
-  {
-    id: "sirvoy",
-    name: "Sirvoy",
-    origin: "🇸🇪 Suecia · Internacional",
-    price: "$9–$49 USD/mes",
-    priceNote: "+ ~1% comisión en transacciones",
-    desc: "Sistema de reservas para hospedaje, cabañas y hoteles boutique. Popular en LATAM por su precio bajo.",
-    pros: ["Precio muy bajo (desde $9 USD/mes)", "Channel manager incluido", "App móvil disponible", "Soporte 24/7"],
-    cons: ["Sin MercadoPago nativo", "No adaptado a balnearios/piscinas", "Sin WhatsApp integrado", "Personalización limitada"],
-    scores: { precio: { val: "A", cls: "hi" }, localizacion: { val: "C", cls: "lo" }, features: { val: "B", cls: "mid" }, soporte: { val: "B", cls: "mid" } }
-  },
-  {
-    id: "reservamos",
-    name: "Reservamos / HotelBeds",
-    origin: "🇲🇽 México · Regional",
-    price: "10–18% comisión",
-    priceNote: "por reserva + setup variable",
-    desc: "Plataforma de distribución turística enfocada en hoteles. Fuerte en México pero orientada a distribución, no gestión operativa.",
-    pros: ["Red de distribución amplia", "Reconocimiento de marca en México", "Integración con OTAs"],
-    cons: ["Comisión alta (10–18%) por reserva", "No apto para balnearios pequeños", "Sin WhatsApp ni notificaciones", "Dependencia total del proveedor"],
-    scores: { precio: { val: "D", cls: "lo" }, localizacion: { val: "B", cls: "mid" }, features: { val: "B-", cls: "mid" }, soporte: { val: "B", cls: "mid" } }
-  },
-  {
-    id: "fareharbor",
-    name: "FareHarbor",
-    origin: "🇺🇸 EE.UU. · Internacional (Booking.com)",
-    price: "Gratis*",
-    priceNote: "+ 6% comisión al cliente final",
-    desc: "Líder mundial en reservas para actividades y tours. Propiedad de Booking.com. Enfocado en turismo experiencial.",
-    pros: ["Sin costo mensual para el operador", "Muy maduro y robusto", "Integración con canales globales", "App móvil completa"],
-    cons: ["6% de comisión cargada al cliente", "No acepta MercadoPago", "Interfaz en inglés principalmente", "No apto para balnearios", "Dependencia de Booking.com"],
-    scores: { precio: { val: "B", cls: "mid" }, localizacion: { val: "D", cls: "lo" }, features: { val: "A", cls: "hi" }, soporte: { val: "B", cls: "mid" } }
-  },
-  {
-    id: "cloudbeds",
-    name: "Cloudbeds",
-    origin: "🇺🇸 EE.UU. · Enterprise",
-    price: "$300–$800+ USD/mes",
-    priceNote: "según número de propiedades",
-    desc: "PMS completo para hoteles y resorts. El más potente del mercado pero orientado a hoteles medianos/grandes.",
-    pros: ["PMS completo + channel manager", "Revenue management", "Reportes avanzados", "Soporte 24/7 en español"],
-    cons: ["Precio muy alto ($300+/mes)", "Sobredimensionado para balnearios", "Sin MercadoPago nativo", "Contrato anual obligatorio"],
-    scores: { precio: { val: "F", cls: "lo" }, localizacion: { val: "B", cls: "mid" }, features: { val: "A+", cls: "hi" }, soporte: { val: "A", cls: "hi" } }
-  },
-  {
-    id: "mindbody",
-    name: "Mindbody",
-    origin: "🇺🇸 EE.UU. · Wellness / Recreación",
-    price: "$129–$499 USD/mes",
-    priceNote: "suscripción mensual",
-    desc: "Plataforma para centros de bienestar y actividades recreativas. Popular en spas y wellness, no en balnearios.",
-    pros: ["Ideal para wellness y clases", "App móvil para clientes", "Membresías incluidas"],
-    cons: ["Precio muy alto para PyMEs", "Sin soporte para hospedaje/cabañas", "Sin MercadoPago", "No localizado para México", "Sin WhatsApp"],
-    scores: { precio: { val: "F", cls: "lo" }, localizacion: { val: "D", cls: "lo" }, features: { val: "B", cls: "mid" }, soporte: { val: "B", cls: "mid" } }
-  }
-  // ── NUEVO COMPETIDOR: copia un objeto de arriba y pégalo aquí ──
-];
+/* ══════════════════════════════════════════════════════════════════════
+   ESTADO — persiste en localStorage
+══════════════════════════════════════════════════════════════════════ */
+const LS_KEY = 'reservaos_tracker_v2';
+let DB = load();
 
-// ─────────────────────────────────────────────────────────────────
-// CHANGELOG — Agrega entradas con fromVer / toVer
-// Grupos disponibles: added / changed / arch / integr
-// ─────────────────────────────────────────────────────────────────
-const CHANGELOG = [
-  {
-    from: "v0", to: "v2",
-    date: "Jun 15 → Jun 16, 2026",
-    summary: "Pivot de SaaS interno a producto cliente — primera entrega Chimulco",
-    open: true,
-    groups: [
-      { type: "added", title: "AGREGADO", items: [
-        "Sistema de reservas para 24 servicios (bungalows, VIP, campers, cabinas, albercas)",
-        "Vista de calendario de disponibilidad",
-        "Panel administrador protegido (Ctrl+Shift+A)",
-        "Persistencia via localStorage (sin servidor)",
-        "Exportación CSV/JSON desde panel admin",
-        "Scripts de inicio para Windows (.bat) y Mac/Linux (.sh)"
-      ]},
-      { type: "arch", title: "CAMBIOS ARQUITECTÓNICOS", items: [
-        "De React+Node.js → HTML5 puro (eliminación total de dependencias)",
-        "De SQLite backend → localStorage del navegador",
-        "De multi-archivo → single HTML file (todo inline)",
-        "De SaaS multi-usuario → cliente único (Chimulco)",
-        "Reducción de complejidad: de 45 archivos a 4 archivos"
-      ]}
-    ]
-  },
-  {
-    from: "v2", to: "v3",
-    date: "Jun 16 → Jun 17, 2026",
-    summary: "Mejoras de UI/UX + generalización white-label (+23 KB de features)",
-    groups: [
-      { type: "added", title: "AGREGADO", items: [
-        "UI rediseñada con gradientes y sombras mejoradas",
-        "Validaciones de formulario más robustas",
-        "Sistema de notificaciones/feedback visual en pantalla",
-        "Mejor soporte responsive (mobile-first)",
-        "Soporte explícito para embed vía iframe"
-      ]},
-      { type: "changed", title: "MODIFICADO", items: [
-        "Título: 'Chimulco' → 'ReservaOS' (white-label genérico)",
-        "Paleta de colores refinada",
-        "Tamaño de 98 KB → 121 KB (+23 KB nuevas funcionalidades)"
-      ]}
-    ]
-  },
-  {
-    from: "v3", to: "Pro",
-    date: "Jun 17, 2026",
-    summary: "Salto a backend de producción — Node.js + integraciones externas + cloud deploy",
-    groups: [
-      { type: "arch", title: "ARQUITECTURA", items: [
-        "De HTML standalone → Node.js + Express API REST completa",
-        "De localStorage → SQLite con schema SQL, seeds y migraciones",
-        "De single file → arquitectura modular (routes/, middleware/, integrations/, db/)",
-        "Multi-usuario real con JWT access + refresh tokens",
-        "Docker containerizado para deploy reproducible"
-      ]},
-      { type: "integr", title: "INTEGRACIONES NUEVAS", items: [
-        "MercadoPago — cobros online con webhook de pagos",
-        "WhatsApp Business Cloud API — notificaciones automáticas",
-        "Email SMTP (Gmail/Mailgun) — confirmaciones y recordatorios",
-        "AWS S3 / Cloudflare R2 — almacenamiento de imágenes en cloud",
-        "QR codes — generación automática por reserva"
-      ]},
-      { type: "added", title: "FEATURES NUEVAS", items: [
-        "Dashboard con métricas en tiempo real",
-        "CRUD completo de clientes con historial",
-        "Estados de reserva: pendiente → confirmada → check-in → check-out → cancelada",
-        "Sistema de folios / numeración automática",
-        "Rate limiting (100 req/min) para protección de API",
-        "Suite de tests automatizados (tests/run.js)"
-      ]}
-    ]
-  },
-  {
-    from: "v3", to: "Paquete",
-    date: "Jun 16, 2026",
-    summary: "Empaquetado comercial — v3 + documentación completa + modelos de precios",
-    groups: [
-      { type: "added", title: "DOCUMENTACIÓN NUEVA", items: [
-        "Propuesta Comercial (PDF + DOCX editable)",
-        "Ficha Técnica con especificaciones del sistema",
-        "Contrato de Implementación editable (PDF + DOCX)",
-        "Manual del Administrador (PDF + DOCX)",
-        "Guía del Cliente para usuario final",
-        "Plan de Capacitación con programa estructurado"
-      ]},
-      { type: "changed", title: "MODELO DE NEGOCIO", items: [
-        "Tier Básico: $9,500 MXN implementación + $1,500/mes",
-        "Tier Profesional: $19,500 MXN + $2,500/mes",
-        "Tier Enterprise: $35,000 MXN + $4,500/mes"
-      ]}
-    ]
-  }
-  // ── NUEVO CHANGELOG: copia un objeto de arriba y pégalo aquí ──
-];
+function load(){
+  try{
+    const raw = localStorage.getItem(LS_KEY);
+    return raw ? JSON.parse(raw) : JSON.parse(JSON.stringify(BASE_DATA));
+  }catch(e){ return JSON.parse(JSON.stringify(BASE_DATA)); }
+}
+function save(showMsg=true){
+  localStorage.setItem(LS_KEY, JSON.stringify(DB));
+  if(showMsg) toast('Guardado en el navegador ✓');
+  updateBadge();
+}
+function resetData(){
+  if(!confirm('¿Restablecer todos los datos originales? Se perderán los cambios guardados.')) return;
+  localStorage.removeItem(LS_KEY);
+  DB = JSON.parse(JSON.stringify(BASE_DATA));
+  renderAll();
+  toast('Datos restablecidos ✓');
+}
 
-/* ══════════════════════════════════════════════════════════════════
-   ▶▶  FIN DE DATOS — No toques lo que sigue salvo para diseño  ◀◀
-══════════════════════════════════════════════════════════════════ */
+/* ══════════════════════════════════════════════════════════════════════
+   HELPERS
+══════════════════════════════════════════════════════════════════════ */
+let _searchQ = '';
 
-// ── HELPERS ──
-const h = (tag, cls, html, attrs='') => `<${tag} class="${cls}" ${attrs}>${html}</${tag}>`;
-const val2html = v => {
-  if (v === 'y') return '<span class="chk-y">✓</span>';
-  if (v === 'n') return '<span class="chk-n">✗</span>';
-  return `<span class="chk-p">${v}</span>`;
-};
+function esc(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
 
-// ── RENDER TIMELINE ──
-function renderTimeline() {
+function hl(text, q){
+  if(!q) return esc(text);
+  const re = new RegExp('('+q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+')','gi');
+  return esc(text).replace(re, '<span class="hl">$1</span>');
+}
+
+function toast(msg, dur=2200){
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'), dur);
+}
+
+function uid(){ return Math.random().toString(36).slice(2,10); }
+
+function updateBadge(){
+  const now = new Date();
+  const m = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
+  document.getElementById('hbadge').textContent = `${now.getDate()} ${m[now.getMonth()]} ${now.getFullYear()} · ${DB.versions.length}v / ${DB.competitors.length}c`;
+}
+
+function val2html(v){
+  if(v==='y') return '<span class="chk-y">✓</span>';
+  if(v==='n') return '<span class="chk-n">✗</span>';
+  return `<span class="chk-p">${esc(v)}</span>`;
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+   RENDER TIMELINE
+══════════════════════════════════════════════════════════════════════ */
+function renderTimeline(){
+  const q = _searchQ.toLowerCase();
+  const filtered = q ? DB.versions.filter(v =>
+    (v.name+v.desc+(v.tags||[]).map(t=>t.text).join(' ')+(v.features||[]).map(f=>f.title+f.desc).join(' ')).toLowerCase().includes(q)
+  ) : DB.versions;
+
   const stats = [
-    { val: VERSIONS.length, label: "Versiones", color: "var(--accent2)" },
-    { val: "24", label: "Servicios", color: "var(--teal2)" },
-    { val: COMPETITORS.filter(c=>!c.highlight).length, label: "Competidores", color: "var(--amber2)" },
-    { val: CHANGELOG.length, label: "Cambios registrados", color: "var(--green2)" }
+    {val:DB.versions.length, label:"Versiones", color:"var(--accent2)"},
+    {val:DB.competitors.filter(c=>!c.highlight).length, label:"Competidores", color:"var(--teal2)"},
+    {val:DB.changelog.length, label:"Changelogs", color:"var(--amber2)"},
+    {val:DB.versions.reduce((a,v)=>(v.features||[]).length+a,0), label:"Features totales", color:"var(--green2)"}
   ];
-  let statsHtml = stats.map(s =>
+
+  const statsHtml = stats.map(s=>
     `<div class="stat-box"><div class="stat-val" style="color:${s.color}">${s.val}</div><div class="stat-label">${s.label}</div></div>`
   ).join('');
 
-  let tlHtml = VERSIONS.map(v => {
-    const badge = v.badge ? `<span class="delta ${v.badge.type}">${v.badge.text}</span>` : '';
-    const tags = v.tags.map(t => `<span class="tag ${t.type}">${t.text}</span>`).join('');
-    const feats = v.features.map(f =>
-      `<div class="feat-item"><span>${f.icon}</span><span><b>${f.title}</b> — ${f.desc}</span></div>`
-    ).join('');
-    return `
-    <div class="tl-item">
-      <div class="tl-dot" style="background:${v.dotColor}">${v.label}</div>
-      <div class="tl-card">
-        <div class="tl-header">
-          <div class="tl-icon">${v.icon}</div>
-          <div class="tl-meta">
-            <div class="tl-name">${v.name} ${badge}</div>
-            <div class="tl-date">${v.date} · ${v.folder}</div>
-            <div class="tl-tags">${tags}</div>
+  const tlHtml = filtered.length === 0
+    ? `<div class="no-result">Sin resultados para "<b>${esc(q)}</b>"</div>`
+    : filtered.map((v,i)=>{
+      const badge = v.badge ? `<span class="delta ${v.badge.type}">${hl(v.badge.text,q)}</span>` : '';
+      const tags = (v.tags||[]).map(t=>`<span class="tag ${t.type}">${hl(t.text,q)}</span>`).join('');
+      const feats = (v.features||[]).map(f=>`<div class="feat-item"><span>${esc(f.icon)}</span><span><b>${hl(f.title,q)}</b> — ${hl(f.desc,q)}</span></div>`).join('');
+      return `
+      <div class="tl-item">
+        <div class="tl-dot" style="background:${esc(v.dotColor)}">${esc(v.label)}</div>
+        <div class="tl-card">
+          <div class="tl-actions">
+            <button class="icon-btn edit" onclick="editVersion(${i})">✏️ Editar</button>
+            <button class="icon-btn" onclick="deleteVersion(${i})">🗑 Eliminar</button>
           </div>
+          <div class="tl-header">
+            <div class="tl-icon">${esc(v.icon)}</div>
+            <div class="tl-meta">
+              <div class="tl-name">${hl(v.name,q)} ${badge}</div>
+              <div class="tl-date">${hl(v.date,q)} · ${esc(v.folder)}</div>
+              <div class="tl-tags">${tags}</div>
+            </div>
+          </div>
+          <div class="tl-desc">${hl(v.desc,q)}</div>
+          <div class="tl-features">${feats}</div>
+          <div class="tl-size">${esc(v.meta)}</div>
         </div>
-        <div class="tl-desc">${v.desc}</div>
-        <div class="tl-features">${feats}</div>
-        <div class="tl-size">${v.meta}</div>
-      </div>
-    </div>`;
-  }).join('');
+      </div>`;
+    }).join('');
 
   document.getElementById('tab-timeline').innerHTML = `
-    <div class="section-title">Historial de Versiones — ReservaOS</div>
-    <div class="section-sub">Evolución completa desde el prototipo SaaS hasta el paquete comercial</div>
+    <div class="section-title">Historial de Versiones</div>
+    <div class="section-sub">Evolución completa del sistema desde el prototipo hasta el paquete comercial</div>
     <div class="stats-bar">${statsHtml}</div>
-    <button class="add-btn" onclick="showAddGuide('version')">➕ Agregar nueva versión</button>
+    <button class="add-btn" onclick="openVersionModal()">➕ Nueva versión</button>
     <div class="timeline">${tlHtml}</div>`;
 }
 
-// ── RENDER MATRIX ──
-function renderMatrix() {
-  const vCols = MATRIX.cols.map(id => VERSIONS.find(v => v.id === id));
-  const thead = `<tr><th class="feat-col">Funcionalidad</th>${vCols.map(v =>
-    `<th>${v.name.split('—')[0].trim()}<span class="ver-badge">${v.label}</span></th>`
-  ).join('')}</tr>`;
-  const tbody = MATRIX.categories.map(cat => {
-    const catRow = `<tr><td class="feat-cat" colspan="${vCols.length+1}">${cat.name}</td></tr>`;
-    const rows = cat.rows.map(r =>
-      `<tr><td class="feat-name">${r.name}</td>${r.vals.map(v => `<td>${val2html(v)}</td>`).join('')}</tr>`
+/* ══════════════════════════════════════════════════════════════════════
+   RENDER MATRIX
+══════════════════════════════════════════════════════════════════════ */
+function renderMatrix(){
+  const q = _searchQ.toLowerCase();
+  const vCols = DB.matrix.cols.map(id=>DB.versions.find(v=>v.id===id)).filter(Boolean);
+  const thead = `<tr><th class="feat-col">Funcionalidad</th>${vCols.map(v=>`<th>${hl(v.name.split('—')[0].trim(),q)}<span class="ver-badge">${esc(v.label)}</span></th>`).join('')}</tr>`;
+
+  const tbody = DB.matrix.categories.map(cat=>{
+    if(q && !cat.rows.some(r=>r.name.toLowerCase().includes(q))) return '';
+    const catRow = `<tr><td class="feat-cat" colspan="${vCols.length+1}">${esc(cat.name)}</td></tr>`;
+    const rows = cat.rows.filter(r=>!q||r.name.toLowerCase().includes(q)).map(r=>
+      `<tr><td class="feat-name">${hl(r.name,q)}</td>${r.vals.map(v=>`<td>${val2html(v)}</td>`).join('')}</tr>`
     ).join('');
-    return catRow + rows;
+    return catRow+rows;
   }).join('');
 
   document.getElementById('tab-matrix').innerHTML = `
     <div class="section-title">Matriz de Funcionalidades</div>
-    <div class="section-sub">Comparativa de capacidades entre todas las versiones de ReservaOS</div>
-    <button class="add-btn" onclick="showAddGuide('feature')">➕ Agregar funcionalidad o versión</button>
-    <div class="matrix-wrap"><table class="matrix"><thead>${thead}</thead><tbody>${tbody}</tbody></table></div>`;
+    <div class="section-sub">Comparativa de capacidades entre todas las versiones · <b>y</b>=sí · <b>✗</b>=no · texto=parcial</div>
+    <div class="matrix-wrap"><table class="matrix"><thead>${thead}</thead><tbody>${tbody||'<tr><td class="feat-cat" colspan="99">Sin resultados para "'+esc(q)+'"</td></tr>'}</tbody></table></div>`;
 }
 
-// ── RENDER MARKET ──
-function renderMarket() {
-  const cards = COMPETITORS.map(c => `
+/* ══════════════════════════════════════════════════════════════════════
+   RENDER MARKET
+══════════════════════════════════════════════════════════════════════ */
+function renderMarket(){
+  const q = _searchQ.toLowerCase();
+  const filtered = q ? DB.competitors.filter(c=>(c.name+c.desc+c.origin+(c.pros||[]).join('')+(c.cons||[]).join('')).toLowerCase().includes(q)) : DB.competitors;
+
+  const cards = filtered.length === 0
+    ? `<div class="no-result" style="grid-column:1/-1">Sin resultados para "<b>${esc(q)}</b>"</div>`
+    : filtered.map((c,i)=>`
     <div class="mkt-card ${c.highlight?'highlight':''}">
-      <div class="mkt-name">${c.name}</div>
-      <div class="mkt-origin">${c.origin}</div>
-      <div class="mkt-price">${c.price} <span>${c.priceNote}</span></div>
-      <div class="mkt-desc">${c.desc}</div>
+      ${!c.highlight?`<button class="mkt-del" onclick="deleteCompetitor(${DB.competitors.indexOf(c)})">🗑 Eliminar</button>`:''}
+      <div class="mkt-name">${hl(c.name,q)}</div>
+      <div class="mkt-origin">${hl(c.origin,q)}</div>
+      <div class="mkt-price">${esc(c.price)} <span>${esc(c.priceNote)}</span></div>
+      <div class="mkt-desc">${hl(c.desc,q)}</div>
       <div class="mkt-label pros-label">Ventajas</div>
-      <ul class="mkt-list pros-list">${c.pros.map(p=>`<li>${p}</li>`).join('')}</ul>
+      <ul class="mkt-list pros-list">${(c.pros||[]).map(p=>`<li>${hl(p,q)}</li>`).join('')}</ul>
       <div class="mkt-label cons-label">Limitaciones</div>
-      <ul class="mkt-list cons-list">${c.cons.map(p=>`<li>${p}</li>`).join('')}</ul>
+      <ul class="mkt-list cons-list">${(c.cons||[]).map(p=>`<li>${hl(p,q)}</li>`).join('')}</ul>
       <div class="mkt-score">
-        ${Object.entries(c.scores).map(([k,s])=>`
-          <div class="score-pill"><span class="score-val score-${s.cls}">${s.val}</span>${k.charAt(0).toUpperCase()+k.slice(1)}</div>`
-        ).join('')}
+        ${Object.entries(c.scores||{}).map(([k,s])=>`<div class="score-pill"><span class="score-val score-${s.cls}">${esc(s.val)}</span>${esc(k.charAt(0).toUpperCase()+k.slice(1))}</div>`).join('')}
       </div>
     </div>`).join('');
 
-  // Big compare table — auto-generated from COMPETITORS
-  const allC = COMPETITORS;
-  const ours = allC.find(c=>c.highlight);
-  const bcHead = `<tr><th>Criterio</th>${allC.map(c=>`<th class="${c.highlight?'ours':''}">${c.name}${c.highlight?' 🏆':''}</th>`).join('')}</tr>`;
+  // Big compare table
+  const allC = DB.competitors;
+  const bcHead = `<tr><th>Criterio</th>${allC.map(c=>`<th class="${c.highlight?'ours':''}">${esc(c.name)}${c.highlight?' 🏆':''}</th>`).join('')}</tr>`;
+  const mkBadge=(c,yes,no)=>c.highlight?`<span class="badge-pill bp-g">${yes}</span>`:`<span class="badge-pill bp-r">${no}</span>`;
   const bcRows = [
-    { cat: "💰 Costos", rows: [
-      { label: "Costo mensual", vals: allC.map(c=>c.price) },
-      { label: "Sin comisión por reserva", vals: allC.map(c=> c.highlight?'<span class="bwin">✓ 0%</span>' : c.id==='fareharbor'?'<span class="blos">6% cliente</span>' : c.id==='cloudbeds'?'<span class="bwin">✓</span>' : c.id==='mindbody'?'<span class="bwin">✓</span>' : '<span class="bneu">~1–18%</span>') }
+    {cat:"💰 Costos",rows:[
+      {label:"Precio mensual",vals:allC.map(c=>esc(c.price))},
+      {label:"Sin comisión por reserva",vals:allC.map(c=>c.highlight?'<span class="badge-pill bp-g">✓ 0%</span>':c.id==='cloudbeds'||c.id==='mindbody'?'<span class="badge-pill bp-a">Sin comis.</span>':'<span class="badge-pill bp-r">Comisión</span>')}
     ]},
-    { cat: "🇲🇽 México", rows: [
-      { label: "MercadoPago", vals: allC.map(c=> c.id==='reservaos'?'<span class="badge-pill bp-g">SÍ</span>' : c.id==='reservamos'?'<span class="badge-pill bp-a">Parcial</span>' : '<span class="badge-pill bp-r">NO</span>') },
-      { label: "WhatsApp Business", vals: allC.map(c=> c.id==='reservaos'?'<span class="badge-pill bp-g">SÍ</span>' : '<span class="badge-pill bp-r">NO</span>') },
-      { label: "Idioma español MX", vals: allC.map(c=> ['reservaos','reservamos'].includes(c.id)?'<span class="bwin">100% MX</span>' : c.id==='sirvoy'||c.id==='cloudbeds'?'<span class="bneu">Español EU</span>' : '<span class="blos">Inglés</span>') }
+    {cat:"🇲🇽 México",rows:[
+      {label:"MercadoPago",vals:allC.map(c=>c.id==='reservaos'?'<span class="badge-pill bp-g">SÍ</span>':c.id==='reservamos'?'<span class="badge-pill bp-a">Parcial</span>':'<span class="badge-pill bp-r">NO</span>')},
+      {label:"WhatsApp Business",vals:allC.map(c=>mkBadge(c,'SÍ','NO'))},
+      {label:"Offline (sin internet)",vals:allC.map(c=>c.id==='reservaos'?'<span class="badge-pill bp-g">SÍ (v3)</span>':'<span class="badge-pill bp-r">NO</span>')}
     ]},
-    { cat: "🏊 Balnearios", rows: [
-      { label: "Gestión de cabañas", vals: allC.map(c=> ['reservaos','sirvoy','cloudbeds'].includes(c.id)?'<span class="badge-pill bp-g">SÍ</span>' : c.id==='fareharbor'?'<span class="badge-pill bp-a">Parcial</span>' : '<span class="badge-pill bp-r">NO</span>') },
-      { label: "Gestión de albercas/áreas", vals: allC.map(c=> c.id==='reservaos'?'<span class="badge-pill bp-g">SÍ</span>' : c.id==='fareharbor'?'<span class="badge-pill bp-a">Parcial</span>' : '<span class="badge-pill bp-r">NO</span>') },
-      { label: "Offline (sin internet)", vals: allC.map(c=> c.id==='reservaos'?'<span class="badge-pill bp-g">SÍ (v3)</span>' : '<span class="badge-pill bp-r">NO</span>') },
-      { label: "Código propio / sin lock-in", vals: allC.map(c=> c.id==='reservaos'?'<span class="badge-pill bp-g">SÍ</span>' : '<span class="badge-pill bp-r">NO</span>') }
+    {cat:"🏊 Balnearios",rows:[
+      {label:"Gestión de cabañas",vals:allC.map(c=>['reservaos','sirvoy','cloudbeds'].includes(c.id)?'<span class="badge-pill bp-g">SÍ</span>':'<span class="badge-pill bp-r">NO</span>')},
+      {label:"Gestión de albercas",vals:allC.map(c=>c.id==='reservaos'?'<span class="badge-pill bp-g">SÍ</span>':'<span class="badge-pill bp-r">NO</span>')},
+      {label:"Código propio / sin lock-in",vals:allC.map(c=>mkBadge(c,'SÍ','NO'))}
     ]}
-  ].map(section => {
-    const catRow = `<tr><td class="cat" colspan="${allC.length+1}">${section.cat}</td></tr>`;
-    const rows = section.rows.map(r =>
-      `<tr><td>${r.label}</td>${r.vals.map((v,i)=>`<td class="${allC[i].highlight?'ours':''}">${v}</td>`).join('')}</tr>`
-    ).join('');
-    return catRow + rows;
+  ].map(s=>{
+    const cr=`<tr><td class="cat" colspan="${allC.length+1}">${s.cat}</td></tr>`;
+    const rs=s.rows.map(r=>`<tr><td>${r.label}</td>${r.vals.map((v,i)=>`<td class="${allC[i].highlight?'ours':''}">${v}</td>`).join('')}</tr>`).join('');
+    return cr+rs;
   }).join('');
 
   document.getElementById('tab-market').innerHTML = `
     <div class="section-title">Comparativa de Mercado</div>
     <div class="section-sub">ReservaOS vs principales alternativas para balnearios y centros recreativos en México y LATAM</div>
-    <button class="add-btn" onclick="showAddGuide('competitor')">➕ Agregar competidor</button>
+    <button class="add-btn" onclick="openCompetitorModal()">➕ Nuevo competidor</button>
     <div class="market-grid">${cards}</div>
-    <div class="section-title" style="font-size:15px;margin-bottom:6px">Tabla comparativa detallada</div>
+    <div class="section-title" style="font-size:15px;margin-bottom:6px">Tabla comparativa</div>
     <div class="big-compare"><table class="bc"><thead>${bcHead}</thead><tbody>${bcRows}</tbody></table></div>`;
 }
 
-// ── RENDER CHANGELOG ──
-function renderChangelog() {
-  const entries = CHANGELOG.map((cl,i) => {
-    const groups = cl.groups.map(g => `
-      <div class="cl-group">
-        <div class="cl-gtitle ${g.type}">${g.title}</div>
-        <ul class="cl-items">${g.items.map(item=>`<li>${item}</li>`).join('')}</ul>
-      </div>`).join('');
-    return `
-    <div class="cl-entry ${cl.open?'open':''}">
-      <div class="cl-head" onclick="toggleCl(this)">
-        <span class="cl-ver">${cl.from} → ${cl.to}</span>
-        <span class="cl-date">${cl.date}</span>
-        <span class="cl-summary">${cl.summary}</span>
-        <span class="cl-arrow">▶</span>
-      </div>
-      <div class="cl-body">${groups}</div>
-    </div>`;
-  }).join('');
+/* ══════════════════════════════════════════════════════════════════════
+   RENDER CHANGELOG
+══════════════════════════════════════════════════════════════════════ */
+function renderChangelog(){
+  const q = _searchQ.toLowerCase();
+  const filtered = q ? DB.changelog.filter(c=>(c.from+c.to+c.summary+c.groups.map(g=>g.items.join(' ')).join(' ')).toLowerCase().includes(q)) : DB.changelog;
+
+  const entries = filtered.length===0
+    ? `<div class="no-result">Sin resultados para "<b>${esc(q)}</b>"</div>`
+    : filtered.map((cl,i)=>{
+      const realIdx = DB.changelog.indexOf(cl);
+      const groups = cl.groups.map(g=>`
+        <div class="cl-group">
+          <div class="cl-gtitle ${g.type}">${esc(g.title)}</div>
+          <ul class="cl-items">${(g.items||[]).map(item=>`<li>${hl(item,q)}</li>`).join('')}</ul>
+        </div>`).join('');
+      return `
+      <div class="cl-entry ${cl.open?'open':''}">
+        <div class="cl-head" onclick="toggleCl(this)">
+          <span class="cl-ver">${hl(cl.from,q)} → ${hl(cl.to,q)}</span>
+          <span class="cl-date">${esc(cl.date)}</span>
+          <span class="cl-summary">${hl(cl.summary,q)}</span>
+          <button class="cl-del-btn" onclick="event.stopPropagation();deleteChangelog(${realIdx})">🗑</button>
+          <span class="cl-arr">▶</span>
+        </div>
+        <div class="cl-body">${groups}</div>
+      </div>`;
+    }).join('');
 
   document.getElementById('tab-changelog').innerHTML = `
     <div class="section-title">Changelog Detallado</div>
     <div class="section-sub">Registro completo de cambios entre versiones con diferencias técnicas y funcionales</div>
-    <button class="add-btn" onclick="showAddGuide('changelog')">➕ Agregar entrada de changelog</button>
+    <button class="add-btn" onclick="openChangelogModal()">➕ Nueva entrada</button>
     ${entries}`;
 }
 
-// ── RENDER GUIDE ──
-function renderGuide() {
-  document.getElementById('tab-guide').innerHTML = `
-    <div class="section-title">➕ Cómo agregar nuevas versiones u otros sistemas</div>
-    <div class="section-sub">Todo el contenido está en bloques JSON al inicio del archivo. No necesitas tocar HTML ni CSS.</div>
-
-    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:16px;margin-bottom:28px">
-      ${[
-        { icon:'📅', title:'Nueva versión', action:'version', desc:'Agregar al historial y matriz de features' },
-        { icon:'🏪', title:'Nuevo competidor', action:'competitor', desc:'Agregar a la comparativa de mercado' },
-        { icon:'📝', title:'Entrada de changelog', action:'changelog', desc:'Documentar cambios entre versiones' },
-        { icon:'📊', title:'Nueva funcionalidad', action:'feature', desc:'Agregar fila a la matriz de features' }
-      ].map(g => `
-        <div class="tl-card" style="cursor:pointer" onclick="showAddGuide('${g.action}')">
-          <div style="font-size:28px;margin-bottom:10px">${g.icon}</div>
-          <div style="font-size:14px;font-weight:700;color:var(--text);margin-bottom:6px">${g.title}</div>
-          <div style="font-size:11px;color:var(--text2)">${g.desc}</div>
-          <div style="margin-top:12px;font-size:11px;color:var(--accent3);font-weight:600">Ver instrucciones →</div>
-        </div>`
-      ).join('')}
-    </div>
-
-    <div class="tl-card">
-      <div style="font-size:13px;font-weight:700;color:var(--text);margin-bottom:10px">Flujo general</div>
-      <ol style="list-style:decimal;padding-left:18px;display:flex;flex-direction:column;gap:8px;font-size:12px;color:var(--text2)">
-        <li>Abre <code>version-tracker.html</code> en cualquier editor de texto (VS Code, Notepad++, etc.)</li>
-        <li>Busca la sección marcada con <code>▶▶ DATOS</code> al inicio del <code>&lt;script&gt;</code></li>
-        <li>Agrega un objeto al array correspondiente (VERSIONS, COMPETITORS o CHANGELOG)</li>
-        <li>Guarda y recarga el archivo en el navegador — los cambios aparecen automáticamente</li>
-        <li>Cuando estés listo, haz commit y push al repositorio para que todos vean la actualización</li>
-      </ol>
-    </div>`;
+/* ══════════════════════════════════════════════════════════════════════
+   SEARCH
+══════════════════════════════════════════════════════════════════════ */
+let _searchTimer;
+function onSearch(val){
+  clearTimeout(_searchTimer);
+  _searchTimer = setTimeout(()=>{
+    _searchQ = val.trim();
+    renderTimeline(); renderMatrix(); renderMarket(); renderChangelog();
+  }, 180);
 }
 
-// ── GUIDE PANELS ──
-const GUIDES = {
-  version: {
-    title: "Agregar nueva versión al historial",
-    html: `
-      <p>Abre <code>version-tracker.html</code>, busca el array <code>VERSIONS</code> y agrega un objeto al final (antes del comentario <code>// ── NUEVA VERSIÓN</code>):</p>
-      <pre>{
-  id: "mi-sistema-v4",          // identificador único (sin espacios)
-  label: "v4",                  // texto del punto en la timeline
-  dotColor: "#6366f1",          // color del punto (hex)
-  icon: "🆕",                   // emoji del ícono
-  name: "Mi Sistema v4 — Descripción corta",
-  badge: { text: "NUEVO", type: "new" },  // opcional: "new" | "up"
-  date: "20 Jun 2026",
-  folder: "mi-sistema-v4/",
-  tags: [
-    { text: "Node.js", type: "stack" },   // stack | feature | deploy | new
-    { text: "PostgreSQL", type: "stack" }
-  ],
-  desc: "Descripción de esta versión...",
-  features: [
-    { icon: "🔐", title: "Auth", desc: "descripción" },
-    { icon: "📅", title: "Reservas", desc: "descripción" }
-  ],
-  meta: "~200 KB · 20 archivos · Stack: Node 20"
-}</pre>
-      <h4>Luego agrégala a la Matriz:</h4>
-      <p>En el objeto <code>MATRIX</code>, agrega el id al array <code>cols</code> y un valor en cada fila de <code>categories</code>. Usa <code>"y"</code> (sí), <code>"n"</code> (no), o texto personalizado como <code>"Parcial"</code>.</p>`
-  },
-  competitor: {
-    title: "Agregar competidor al análisis de mercado",
-    html: `
-      <p>Busca el array <code>COMPETITORS</code> y agrega un objeto al final (antes del comentario <code>// ── NUEVO COMPETIDOR</code>):</p>
-      <pre>{
-  id: "nuevo-sistema",
-  name: "Nombre del Sistema",
-  origin: "🇲🇽 México · Regional",
-  price: "$500 MXN/mes",
-  priceNote: "sin comisión por reserva",
-  desc: "Descripción breve del sistema...",
-  highlight: false,             // solo true para TU solución
-  pros: [
-    "Ventaja 1",
-    "Ventaja 2"
-  ],
-  cons: [
-    "Limitación 1",
-    "Limitación 2"
-  ],
-  scores: {
-    precio:       { val: "A",  cls: "hi"  },   // hi=verde
-    localizacion: { val: "B",  cls: "mid" },   // mid=amarillo
-    features:     { val: "C",  cls: "lo"  },   // lo=rojo
-    soporte:      { val: "B+", cls: "mid" }
-  }
-}</pre>`
-  },
-  changelog: {
-    title: "Agregar entrada al changelog",
-    html: `
-      <p>Busca el array <code>CHANGELOG</code> y agrega un objeto al final (antes del comentario <code>// ── NUEVO CHANGELOG</code>):</p>
-      <pre>{
-  from: "v3",
-  to: "v4",
-  date: "20 Jun 2026",
-  summary: "Descripción de lo que cambió",
-  open: false,                  // true = expandido por defecto
-  groups: [
-    {
-      type: "added",            // added | changed | arch | integr
-      title: "AGREGADO",
-      items: [
-        "Feature nueva 1",
-        "Feature nueva 2"
-      ]
-    },
-    {
-      type: "changed",
-      title: "MODIFICADO",
-      items: [
-        "Algo que cambió"
-      ]
-    }
-  ]
-}</pre>`
-  },
-  feature: {
-    title: "Agregar funcionalidad a la matriz",
-    html: `
-      <p>En el objeto <code>MATRIX</code>, dentro de <code>categories</code>, agrega una fila a la categoría existente o crea una nueva:</p>
-      <h4>Agregar fila a categoría existente:</h4>
-      <pre>// Dentro de la categoría "📅 Gestión de Reservas":
-{ name: "Check-in digital", vals: ["n","n","n","y","n"] }</pre>
-      <p>El orden de <code>vals</code> sigue el orden de <code>MATRIX.cols</code>. Usa <code>"y"</code>, <code>"n"</code> o texto libre.</p>
-      <h4>Agregar categoría nueva:</h4>
-      <pre>{
-  name: "📱 App Móvil",
-  rows: [
-    { name: "App iOS nativa",     vals: ["n","n","n","n","n"] },
-    { name: "App Android nativa", vals: ["n","n","n","n","n"] },
-    { name: "PWA (web app)",      vals: ["n","y","y","y","y"] }
-  ]
-}</pre>
-      <h4>Agregar columna (nueva versión en la matriz):</h4>
-      <p>Agrega primero la versión al array <code>VERSIONS</code>, luego su <code>id</code> al array <code>MATRIX.cols</code>, y finalmente un valor extra en <code>vals</code> de cada fila.</p>`
-  }
-};
-
-function showAddGuide(type) {
-  const g = GUIDES[type];
-  document.getElementById('ep-title').textContent = g.title;
-  document.getElementById('ep-body').innerHTML = g.html;
-  document.getElementById('edit-panel').classList.add('open');
-}
-function closePanel() { document.getElementById('edit-panel').classList.remove('open'); }
-
-// ── TABS ──
-function showTab(id, el) {
-  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-  document.getElementById('tab-' + id).classList.add('active');
+/* ══════════════════════════════════════════════════════════════════════
+   TABS
+══════════════════════════════════════════════════════════════════════ */
+function showTab(id,el){
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('tab-'+id).classList.add('active');
   el.classList.add('active');
 }
+function toggleCl(head){ head.parentElement.classList.toggle('open'); }
 
-// ── CHANGELOG TOGGLE ──
-function toggleCl(head) { head.parentElement.classList.toggle('open'); }
+/* ══════════════════════════════════════════════════════════════════════
+   MODALS
+══════════════════════════════════════════════════════════════════════ */
+function openModal(id){ document.getElementById(id).classList.add('open'); }
+function closeModal(id){ document.getElementById(id).classList.remove('open'); }
+document.querySelectorAll('.modal-overlay').forEach(m=>m.addEventListener('click',e=>{if(e.target===m)m.classList.remove('open')}));
+document.addEventListener('keydown',e=>{if(e.key==='Escape')document.querySelectorAll('.modal-overlay.open').forEach(m=>m.classList.remove('open'))});
 
-// ── INIT ──
-document.addEventListener('DOMContentLoaded', () => {
-  renderTimeline();
-  renderMatrix();
-  renderMarket();
-  renderChangelog();
-  renderGuide();
-  const now = new Date();
-  const m = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
-  document.getElementById('hbadge').textContent = `Actualizado: ${now.getDate()} ${m[now.getMonth()]} ${now.getFullYear()}`;
-});
+/* ─── VERSION MODAL ─── */
+let _editingVersionIdx = null;
+
+function openVersionModal(idx=null){
+  _editingVersionIdx = idx;
+  const v = idx!==null ? DB.versions[idx] : null;
+  document.getElementById('mv-title').textContent = idx!==null ? 'Editar versión' : 'Nueva versión';
+  document.getElementById('mv-label').value = v?.label||'';
+  document.getElementById('mv-icon').value = v?.icon||'🆕';
+  document.getElementById('mv-name').value = v?.name||'';
+  document.getElementById('mv-date').value = v?.date||'';
+  document.getElementById('mv-color').value = v?.dotColor||'#6366f1';
+  document.getElementById('mv-folder').value = v?.folder||'';
+  document.getElementById('mv-desc').value = v?.desc||'';
+  document.getElementById('mv-meta').value = v?.meta||'';
+
+  // Tags
+  const tl = document.getElementById('mv-tags-list');
+  tl.innerHTML='';
+  (v?.tags||[{text:'',type:'stack'}]).forEach(t=>addTagRow(t));
+
+  // Features
+  const fl = document.getElementById('mv-feats-list');
+  fl.innerHTML='';
+  (v?.features||[{icon:'⭐',title:'',desc:''}]).forEach(f=>addFeatRow(f));
+
+  openModal('modal-version');
+}
+function editVersion(i){ openVersionModal(i); }
+function deleteVersion(i){
+  if(!confirm('¿Eliminar esta versión del historial?')) return;
+  const id = DB.versions[i].id;
+  DB.versions.splice(i,1);
+  DB.matrix.cols = DB.matrix.cols.filter(c=>c!==id);
+  DB.matrix.categories.forEach(cat=>cat.rows.forEach(r=>{
+    const ci = DB.matrix.cols.indexOf(id);
+    if(ci>-1) r.vals.splice(ci,1);
+  }));
+  save(); renderTimeline(); renderMatrix();
+}
+
+function addTagRow(t=null){
+  const d = document.createElement('div'); d.className='flist-item';
+  d.innerHTML=`<input placeholder="texto" value="${esc(t?.text||'')}" style="flex:2"/>
+    <select style="flex:1;background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius);padding:5px 6px;color:var(--text);font-size:11px">
+      <option value="stack" ${t?.type==='stack'?'selected':''}>stack</option>
+      <option value="feature" ${t?.type==='feature'?'selected':''}>feature</option>
+      <option value="deploy" ${t?.type==='deploy'?'selected':''}>deploy</option>
+      <option value="new" ${t?.type==='new'?'selected':''}>new</option>
+    </select>
+    <button class="rem" onclick="this.parentElement.remove()">✕</button>`;
+  document.getElementById('mv-tags-list').appendChild(d);
+}
+function addFeatRow(f=null){
+  const d = document.createElement('div'); d.className='flist-item';
+  d.innerHTML=`<input placeholder="emoji" value="${esc(f?.icon||'')}" style="width:48px;flex-shrink:0"/>
+    <input placeholder="Título" value="${esc(f?.title||'')}" style="flex:1"/>
+    <input placeholder="descripción" value="${esc(f?.desc||'')}" style="flex:2"/>
+    <button class="rem" onclick="this.parentElement.remove()">✕</button>`;
+  document.getElementById('mv-feats-list').appendChild(d);
+}
+
+function saveVersion(){
+  const label = document.getElementById('mv-label').value.trim();
+  const name  = document.getElementById('mv-name').value.trim();
+  if(!label||!name){ toast('⚠ Label y nombre son obligatorios',3000); return; }
+
+  const tags = [...document.getElementById('mv-tags-list').querySelectorAll('.flist-item')].map(d=>{
+    const ins = d.querySelectorAll('input,select');
+    return {text:ins[0].value.trim(), type:ins[1].value};
+  }).filter(t=>t.text);
+
+  const features = [...document.getElementById('mv-feats-list').querySelectorAll('.flist-item')].map(d=>{
+    const ins = d.querySelectorAll('input');
+    return {icon:ins[0].value.trim()||'⭐', title:ins[1].value.trim(), desc:ins[2].value.trim()};
+  }).filter(f=>f.title);
+
+  const obj = {
+    id: _editingVersionIdx!==null ? DB.versions[_editingVersionIdx].id : uid(),
+    label, icon:document.getElementById('mv-icon').value.trim()||'🆕',
+    name, date:document.getElementById('mv-date').value.trim(),
+    dotColor:document.getElementById('mv-color').value,
+    folder:document.getElementById('mv-folder').value.trim(),
+    desc:document.getElementById('mv-desc').value.trim(),
+    meta:document.getElementById('mv-meta').value.trim(),
+    tags, features
+  };
+
+  if(_editingVersionIdx!==null){
+    DB.versions[_editingVersionIdx] = {...DB.versions[_editingVersionIdx], ...obj};
+  } else {
+    DB.versions.push(obj);
+    if(!DB.matrix.cols.includes(obj.id)){
+      DB.matrix.cols.push(obj.id);
+      DB.matrix.categories.forEach(cat=>cat.rows.forEach(r=>r.vals.push('n')));
+    }
+  }
+  save(); renderTimeline(); renderMatrix();
+  closeModal('modal-version');
+}
+
+/* ─── COMPETITOR MODAL ─── */
+function openCompetitorModal(){
+  ['mc-name','mc-origin','mc-price','mc-pnote','mc-desc'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('mc-pros-list').innerHTML='';
+  document.getElementById('mc-cons-list').innerHTML='';
+  addProRow(); addConRow();
+  document.getElementById('sc-precio').value='B';document.getElementById('sc-precio-cls').value='mid';
+  document.getElementById('sc-local').value='B';document.getElementById('sc-local-cls').value='mid';
+  document.getElementById('sc-feat').value='B';document.getElementById('sc-feat-cls').value='mid';
+  document.getElementById('sc-sup').value='B';document.getElementById('sc-sup-cls').value='mid';
+  openModal('modal-competitor');
+}
+function deleteCompetitor(i){
+  if(!confirm('¿Eliminar este competidor?')) return;
+  DB.competitors.splice(i,1); save(); renderMarket();
+}
+
+function addListRow(listId, val=''){
+  const d=document.createElement('div'); d.className='flist-item';
+  d.innerHTML=`<input placeholder="Descripción" value="${esc(val)}" style="flex:1"/>
+    <button class="rem" onclick="this.parentElement.remove()">✕</button>`;
+  document.getElementById(listId).appendChild(d);
+}
+function addProRow(v=''){addListRow('mc-pros-list',v);}
+function addConRow(v=''){addListRow('mc-cons-list',v);}
+
+function getListVals(id){
+  return [...document.getElementById(id).querySelectorAll('input')].map(i=>i.value.trim()).filter(Boolean);
+}
+
+function saveCompetitor(){
+  const name=document.getElementById('mc-name').value.trim();
+  if(!name){toast('⚠ El nombre es obligatorio',3000);return;}
+  DB.competitors.push({
+    id:uid(), name,
+    origin:document.getElementById('mc-origin').value.trim(),
+    price:document.getElementById('mc-price').value.trim(),
+    priceNote:document.getElementById('mc-pnote').value.trim(),
+    desc:document.getElementById('mc-desc').value.trim(),
+    highlight:false,
+    pros:getListVals('mc-pros-list'),
+    cons:getListVals('mc-cons-list'),
+    scores:{
+      precio:{val:document.getElementById('sc-precio').value,cls:document.getElementById('sc-precio-cls').value},
+      localizacion:{val:document.getElementById('sc-local').value,cls:document.getElementById('sc-local-cls').value},
+      features:{val:document.getElementById('sc-feat').value,cls:document.getElementById('sc-feat-cls').value},
+      soporte:{val:document.getElementById('sc-sup').value,cls:document.getElementById('sc-sup-cls').value}
+    }
+  });
+  save(); renderMarket(); closeModal('modal-competitor');
+}
+
+/* ─── CHANGELOG MODAL ─── */
+function openChangelogModal(){
+  ['cl-from','cl-to','cl-date','cl-summary'].forEach(id=>document.getElementById(id).value='');
+  ['added','changed','arch','integr'].forEach(t=>{document.getElementById('cl-'+t+'-list').innerHTML='';});
+  addClItem('added'); openModal('modal-changelog');
+}
+function deleteChangelog(i){
+  if(!confirm('¿Eliminar esta entrada del changelog?')) return;
+  DB.changelog.splice(i,1); save(); renderChangelog();
+}
+function addClItem(type, val=''){
+  addListRow('cl-'+type+'-list', val);
+}
+function saveChangelog(){
+  const from=document.getElementById('cl-from').value.trim();
+  const to=document.getElementById('cl-to').value.trim();
+  if(!from||!to){toast('⚠ "Desde" y "Hasta" son obligatorios',3000);return;}
+  const groups=[];
+  const map={added:{type:'added',title:'AGREGADO'},changed:{type:'changed',title:'MODIFICADO'},arch:{type:'arch',title:'ARQUITECTURA'},integr:{type:'integr',title:'INTEGRACIONES'}};
+  Object.entries(map).forEach(([k,g])=>{
+    const items=getListVals('cl-'+k+'-list');
+    if(items.length) groups.push({...g,items});
+  });
+  DB.changelog.unshift({
+    from,to,
+    date:document.getElementById('cl-date').value.trim()||new Date().toLocaleDateString('es-MX',{day:'numeric',month:'short',year:'numeric'}),
+    summary:document.getElementById('cl-summary').value.trim(),
+    open:true, groups
+  });
+  save(); renderChangelog(); closeModal('modal-changelog');
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+   EXPORT / IMPORT
+══════════════════════════════════════════════════════════════════════ */
+function openExport(){
+  document.getElementById('exp-title').textContent='Exportar datos JSON';
+  const json = JSON.stringify(DB, null, 2);
+  document.getElementById('export-panel').innerHTML=`
+    <p style="font-size:12px;color:var(--text2);margin-bottom:12px">
+      Copia este JSON y guárdalo. Para que el archivo HTML incluya estos datos de forma permanente,
+      pégalo en la variable <code>BASE_DATA</code> dentro del <code>&lt;script&gt;</code>.
+    </p>
+    <pre id="export-json">${esc(json)}</pre>`;
+  document.getElementById('export-foot').innerHTML=`
+    <button class="btn btn-ghost" onclick="closeModal('modal-export')">Cerrar</button>
+    <button class="btn btn-teal" onclick="copyExport()">📋 Copiar JSON</button>
+    <button class="btn btn-primary" onclick="downloadExport()">⬇ Descargar .json</button>`;
+  openModal('modal-export');
+}
+function copyExport(){
+  navigator.clipboard.writeText(JSON.stringify(DB, null, 2)).then(()=>toast('JSON copiado al portapapeles ✓'));
+}
+function downloadExport(){
+  const a=document.createElement('a');
+  a.href='data:application/json;charset=utf-8,'+encodeURIComponent(JSON.stringify(DB,null,2));
+  a.download='reservaos-tracker-data.json'; a.click();
+  toast('Descargando reservaos-tracker-data.json ✓');
+}
+
+function openImport(){
+  document.getElementById('exp-title').textContent='Importar datos JSON';
+  document.getElementById('export-panel').innerHTML=`
+    <p style="font-size:12px;color:var(--text2);margin-bottom:12px">
+      Pega aquí un JSON exportado previamente (o desde un <code>reservaos-tracker-data.json</code>) para restaurar el estado.
+    </p>
+    <textarea id="import-json" style="width:100%;min-height:220px;background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius);padding:12px;color:var(--teal3);font-family:monospace;font-size:11px;resize:vertical;outline:none" placeholder='{"versions":[...],"matrix":{...},"competitors":[...],"changelog":[]}'></textarea>
+    <p style="font-size:11px;color:var(--amber2);margin-top:10px">⚠ Esto reemplazará todos los datos actuales.</p>`;
+  document.getElementById('export-foot').innerHTML=`
+    <button class="btn btn-ghost" onclick="closeModal('modal-export')">Cancelar</button>
+    <button class="btn btn-primary" onclick="doImport()">⬆ Importar y aplicar</button>`;
+  openModal('modal-export');
+}
+function doImport(){
+  try{
+    const raw=document.getElementById('import-json').value.trim();
+    const data=JSON.parse(raw);
+    if(!data.versions||!data.competitors||!data.changelog) throw new Error('Estructura inválida');
+    DB=data; save(false); renderAll();
+    closeModal('modal-export'); toast('Datos importados correctamente ✓');
+  }catch(e){ toast('⚠ JSON inválido: '+e.message, 4000); }
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+   INIT
+══════════════════════════════════════════════════════════════════════ */
+function renderAll(){ renderTimeline(); renderMatrix(); renderMarket(); renderChangelog(); updateBadge(); }
+
+document.addEventListener('DOMContentLoaded', ()=>{ renderAll(); });
 </script>
 </body>
 </html>
